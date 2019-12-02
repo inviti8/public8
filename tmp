@@ -1,0 +1,16 @@
+{
+    "host": "arweave.net",
+    "port": 443,
+    "response": {
+        "network": "arweave.N.1",
+        "version": 5,
+        "release": 30,
+        "height": 334342,
+        "current": "rELUt1QzQZ9qFJVrQTh73lFHBMCBDVB235Hw6QqPcC_qhYyK8rZSPJ-jHNygl_Ff",
+        "blocks": 358269,
+        "peers": 449,
+        "queue_length": 0,
+        "node_state_latency": 34
+    },
+    "response_time": "778ms"
+}

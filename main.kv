@@ -15,7 +15,8 @@
 
 <ConsoleTextInput>:
     background_color: 0, 0, 0, 1
-    foreground_color: 1,1,1,1
+    foreground_color: 0, .75, .85, 1
+    readonly: True
     on_text: self.on_text_input_change()
 
 <Label>:
@@ -170,6 +171,22 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     padding: 20
+                    size_hint: 1, 0.15
+
+                    Label:
+                        text: 'Template'
+                        size_hint: 0.15, 0.5
+                        
+                    AppSpinner:
+                        id: template_spinner
+                        name: "TEMPLATE_SPINNER"
+                        text: "splitter_carousel"
+                        values: "splitter_carousel", "None"
+                        size_hint: 0.5, 0.7
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    padding: 20
                     size_hint: 1, 0.25
 
                     AppButton:
@@ -188,13 +205,14 @@
                 BoxLayout:
                     orientation: 'vertical'
                     padding: 20
-                    size_hint: 1, 0.4
+                    size_hint: 1, 0.2
 
                     ConsoleTextInput:
                         id: console_text_input
                         name: "CONSOLE_TEXT_INPUT"
                         text: "Console"
-                        size: 50, 44
+                        size_hint: 1, 0.2
+                        size: 50, 20
             
                     
     TabbedPanelItem:
@@ -255,7 +273,7 @@
                     AppTextInput:
                         id: key_path_text_input
                         name: "KEY_PATH_TEXT_INPUT"
-                        size_hint: 0.6, 0.7
+                        size_hint: 0.7, 0.7
 
 
     TabbedPanelItem:

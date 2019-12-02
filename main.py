@@ -6,6 +6,7 @@ from kivy.uix.spinner import Spinner
 from kivy.lang import Builder
 import arweave_com
 import app_builder
+import file_action
 
 GUI = Builder.load_file("main.kv")
 
@@ -23,6 +24,7 @@ class AppButton(Button):
 
         elif self.name is "TEST_APP_BUTTON":
             print("test app")
+            file_action.open_test_page()
 
         elif self.name is "CONTENT_PATH_LOAD_BUTTON":
             print("load content path")
@@ -65,6 +67,11 @@ class ConsoleTextInput(TextInput):
     '''
     Handle console text inputs
     '''
+    def on_kv_post(self, input):
+        host = str(arweave_com.network_info()["host"])
+        port = str(arweave_com.network_info()["port"])
+        self.text = "host: " + host + "    port: " + port 
+
     def on_text_input_change(self):
         if self.name is "TITLE_TEXT_INPUT":
             app_builder.ARWEAVE_APP_TITLE = self.text
@@ -73,6 +80,10 @@ class AppSpinner(Spinner):
     '''
     Handle the dropdowns
     '''
+    def on_kv_post(self, input):
+        if self.name is "TEMPLATE_SPINNER":
+            file_action.TEMPLATE = self.text
+
     def on_spinner_change(self):
         print("on spinner change")
 
@@ -85,6 +96,9 @@ class AppSpinner(Spinner):
         elif self.name is "THEME_SPINNER":
             app_builder.THEME = self.text
 
+        elif self.name is "TEMPLATE_SPINNER":
+            file_action.TEMPLATE = self.text
+
         elif self.name is "SIGNATURE_SPINNER":
             if self.text is "ON":
                 app_builder.SIGN_APP = True
@@ -92,10 +106,6 @@ class AppSpinner(Spinner):
                 app_builder.SIGN_APP = False
 
     
-
-
-
-
 class TabbedPanelApp(App):
     def build(self):
         self.title = 'PUBLIC8'
