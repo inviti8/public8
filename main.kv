@@ -1,5 +1,27 @@
 #:kivy 1.11.1
 
+#Shared attributes
+<AppButton>:
+    color:  0, .7, .8, 1
+
+<AppSpinner>:
+    size: 30, 44
+    color:  0, .7, .8, 1
+    on_text: self.on_spinner_change()
+
+<AppTextInput>:
+    background_color: 0, .5, .65, 1
+    on_text: self.on_text_input_change()
+
+<ConsoleTextInput>:
+    background_color: 0, 0, 0, 1
+    foreground_color: 1,1,1,1
+    on_text: self.on_text_input_change()
+
+<Label>:
+    color: 0, .75, .85, 1
+
+
 <TabLayout>:
     size_hint: 1, 1
     pos_hint: {'center_x': .5, 'center_y': .5}
@@ -22,15 +44,13 @@
                     Label:
                         text: 'Type'
                         size_hint: 0.15, 0.5
-                        color: 0, .5, .65, 1
                         
-                    Spinner:
+                    AppSpinner:
+                        id: type_spinner
+                        name: "TYPE_SPINNER"
                         text: "Journalism"
                         values: "Journalism", "Literary", "Graphic"
                         size_hint: 0.5, 0.7
-                        size: 30, 44
-                        color:  0, .7, .8, 1
-                        on_spinner_select: root.on_spinner_select()
 
 
                 BoxLayout:
@@ -41,9 +61,10 @@
                     Label:
                         text: "Title"
                         size_hint: 0.15, 0.5
-                        color: 0, .5, .65, 1
 
                     AppTextInput:
+                        id: title_text_input
+                        name: "TITLE_TEXT_INPUT"
                         size_hint: 0.7, 0.7
                         background_color: 0, .5, .65, 1
                         multiline: False
@@ -57,11 +78,11 @@
                     Label:
                         text: "Author"
                         size_hint: 0.15, 0.5
-                        color: 0, .5, .65, 1
 
-                    TextInput:
+                    AppTextInput:
+                        id: author_text_input
+                        name: "AUTHOR_TEXT_INPUT"
                         size_hint: 0.7, 0.7
-                        background_color: 0, .5, .65, 1
 
 
                 BoxLayout:
@@ -72,12 +93,12 @@
                     Label:
                         text: "References"
                         size_hint: 0.15, 0.1
-                        color: 0, .5, .65, 1
 
-                    TextInput:
-                        text: "Text Input, start typing here\nmultiline\nsupport"
+                    AppTextInput:
+                        id: references_text_input
+                        name: "REFERENCES_TEXT_INPUT"
+                        text: "REFERENCES:"
                         size: 50, 44
-                        background_color: 0, .5, .65, 1
                         
 
             BoxLayout:
@@ -91,13 +112,14 @@
                     Label:
                         text: 'Content Type'
                         size_hint: 0.35, 0.5
-                        color: 0, .5, .65, 1
-                    Spinner:
+
+                    AppSpinner:
+                        id: content_type_spinner
+                        name: "CONTENT_TYPE_SPINNER"
                         text: "Docx"
                         values: "Docx", "Json"
                         size_hint: 0.6, 0.7
                         size: 30, 44
-                        color:  0, .7, .8, 1
 
 
                 BoxLayout:
@@ -108,16 +130,18 @@
                     Label:
                         text: "Content Path"
                         size_hint: 0.35, 0.5
-                        color: 0, .5, .65, 1
 
-                    TextInput:
-                        size_hint: 0.6, 0.7
-                        background_color: 0, .5, .65, 1
+                    AppTextInput:
+                        id: content_path_text_input
+                        name: "CONTENT_PATH_TEXT_INPUT"
+                        size_hint: 0.7, 0.7
+                        size: 50, 44
 
-                    Button:
+                    AppButton:
+                        id: content_path_load_button
+                        name: "CONTENT_PATH_LOAD_BUTTON"
                         text: "LOAD"
                         size_hint: 0.2, 0.7
-                        color:  0, .7, .8, 1
 
                 BoxLayout:
                     orientation: 'horizontal'
@@ -127,17 +151,21 @@
                     Label:
                         text: 'Theme'
                         size_hint: 0.15, 0.5
-                        color:  0, .5, .65, 1
-                    Spinner:
+
+                    AppSpinner:
+                        id: theme_spinner
+                        name: "THEME_SPINNER"
                         text: "Dark"
                         values: "Dark", "Light"
                         size_hint: 0.5, 0.7
                         size: 30, 44
                         color:  0, .7, .8, 1
-                    Button:
+
+                    AppButton:
+                        id: theme_load_button
+                        name: "THEME_LOAD_BUTTON"
                         text: "LOAD"
                         size_hint: 0.2, 0.7
-                        color: 0, .7, .8, 1
 
                 BoxLayout:
                     orientation: 'horizontal'
@@ -145,15 +173,16 @@
                     size_hint: 1, 0.25
 
                     AppButton:
+                        id: test_app_button
+                        name: "TEST_APP_BUTTON"
                         text: "TEST"
-                        name: "TEST_APP"
                         size_hint: 0.2, 0.7
 
                     AppButton:
+                        id: deploy_app_button
+                        name: "DEPLOY_APP_BUTTON"
                         text: "DEPLOY"
-                        name: "DEPLOY_APP"
                         size_hint: 0.2, 0.7
-
                 
                         
                 BoxLayout:
@@ -161,10 +190,10 @@
                     padding: 20
                     size_hint: 1, 0.4
 
-                    TextInput:
+                    ConsoleTextInput:
+                        id: console_text_input
+                        name: "CONSOLE_TEXT_INPUT"
                         text: "Console"
-                        background_color: .1, .2, .3, 1
-                        color:  0, .7, .8, 1
                         size: 50, 44
             
                     
@@ -182,13 +211,14 @@
                 Label:
                     text: 'Digital Signature'
                     size_hint: 0.2, 0.5
-                    color:  0, .5, .65, 1
-                Spinner:
+
+                AppSpinner:
+                    id: signature_spinner
+                    name: "SIGNATURE_SPINNER"
                     text: "OFF"
                     values: "OFF", "ON"
                     size_hint: 0.6, 0.3
                     size: 40, 50
-                    color: 0, .7, .8, 1
 
 
             BoxLayout:
@@ -199,30 +229,33 @@
                 Label:
                     text: "Keys"
                     size_hint: 1, 0.1
-                    color:  0, .5, .65, 1
 
-                Button:
+                AppButton:
+                    id: generate_key_button
+                    name: "GENERATE_KEY_BUTTON"
                     text: "GENERATE"
                     size_hint: 1, 0.07
-                    color: 0, .7, .8, 1
 
-                Button:
+                AppButton:
+                    id: load_key_button
+                    name: "LOAD_KEY_BUTTON"
                     text: "LOAD"
                     size_hint: 1, 0.07
-                    color: 0, .7, .8, 1
+
 
                 BoxLayout:
                     orientation: 'horizontal'
                     padding: 20
                     size_hint: 1, 0.15
+
                     Label:
                         text: "Key Path:"
                         size_hint: 0.15, 0.5
-                        color:  0, .5, .65, 1
 
-                    TextInput:
+                    AppTextInput:
+                        id: key_path_text_input
+                        name: "KEY_PATH_TEXT_INPUT"
                         size_hint: 0.6, 0.7
-                        background_color: 0, .5, .65, 1
 
 
     TabbedPanelItem:
@@ -239,26 +272,29 @@
                 Label:
                     text: "Key Path"
                     size_hint: 0.3, 0.2
-                    color:  0, .5, .65, 1
 
-                TextInput:
+                AppTextInput:
+                    id: wallet_key_text_input
+                    name: "WALLET_KEY_TEXT_INPUT"
                     size_hint: 0.7, 0.2
-                    background_color: 0, .5, .65, 1
 
-            Button:
+            AppButton:
+                id: load_wallet_key_button
+                name: "LOAD_WALLET_KEY_BUTTON"
                 text: "LOAD KEY FILE"
                 size_hint: 1, 0.1
-                color: 0, .7, .8, 1
 
-            Button:
+            AppButton:
+                id: create_wallet_key_button
+                name: "CREATE_WALLET_KEY_BUTTON"
                 text: "CREATE KEY FILE"
                 size_hint: 1, 0.1
-                color: 0, .7, .8, 1
 
-            Button:
+            AppButton:
+                id: forget_wallet_key_button
+                name: "FORGET_WALLET_KEY_BUTTON"
                 text: "FORGET KEY"
                 size_hint: 1, 0.1
-                color: 0, .7, .8, 1
 
             BoxLayout:
                 orientation: 'vertical'
