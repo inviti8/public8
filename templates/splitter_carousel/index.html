@@ -1,12 +1,149 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <link rel="stylesheet" href="css/onsenui.css"/>
-        <link rel="stylesheet" href="css/onsen-css-components.css"/>
-        <script rel="stylesheet" href="js/onsenui.js"></script>
-    </head>
-    <body>
-        <h1>HELLO</h1>
-    </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carousel</title>
+  <link rel="stylesheet" href="css/onsenui.css">
+  <link rel="stylesheet" href="css/onsen-css-components.css">
+
+  <script src="js/onsenui.js"></script>
+
+  <script>
+        window.fn = {};
+
+        window.fn.open = function() {
+        var menu = document.getElementById('menu');
+        menu.open();
+        };
+
+        window.fn.load = function(page) {
+        var content = document.getElementById('content');
+        var menu = document.getElementById('menu');
+        content.load(page)
+            .then(menu.close.bind(menu));
+        };
+  </script>
+
+  <style>
+    .item-label {
+      display: table-cell;
+      vertical-align: middle;
+      color: white;
+      line-height: 1;
+      font-size: 48px;
+      font-weight: bold;
+      padding-right: 5vw;
+      padding-left: 5vw;
+      overflow-y: auto;
+      height:95vh;
+    }
+    p{
+        font-size: 1.5vh;
+        line-height: 2.5vh;
+        margin: 0;
+        padding: 0;
+    }
+  </style>
+
+</head>
+
+<body>
+        <ons-splitter>
+                <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
+                  <ons-page>
+                    <ons-list>
+                      <ons-list-item onclick="fn.load('home.html')" tappable>
+                        Home
+                      </ons-list-item>
+                      <ons-list-item onclick="fn.load('settings.html')" tappable>
+                        Settings
+                      </ons-list-item>
+                      <ons-list-item onclick="fn.load('about.html')" tappable>
+                        About
+                      </ons-list-item>
+                    </ons-list>
+                  </ons-page>
+                </ons-splitter-side>
+                <ons-splitter-content id="content" page="home.html"></ons-splitter-content>
+              </ons-splitter>
+              
+              <template id="home.html">
+                <ons-page>
+                  <ons-toolbar>
+                    <div class="left">
+                      <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="md-menu"></ons-icon>
+                      </ons-toolbar-button>
+                    </div>
+                    <div class="center">
+                      Main
+                    </div>
+                  </ons-toolbar>
+                  <ons-page>
+                        <ons-carousel id="myCarousel" initial-index="2" swipeable overscrollable auto-scroll auto-refresh fullscreen auto-scroll-ratio="0.2">
+                        <ons-carousel-item style="background-color: gray; overflow-y: scroll; height:90vh;">
+                            <div class="item-label" >
+                                    <p>NAKED</p>
+                                    <p>[Chapter 0.1 -Begin]</p>
+                                    <p>I hear rain. Darkness, and what sounds like rain. Am I sleeping? It kinda feels like just before you wake up. Slowly the darkness is fading to a flickering orange glow. Muffled talking is now blending together with the patter of the rain drops. My mind is slowly transitioning from the cloud like state to clarity. I think my vision has returned mostly, though I keep my eyes partially closed. The rain fades more and I can hear people talking, words becoming intelligible. The crackle of fire and a strong heat just above me. I now feel that I’m laying on the ground… asphalt if I had to guess. Seems like my left eye is stuck shut, the orange flicker shone thru a red tint… blood? I listen.</p>
+                                    <p>“You sure this is the right motherfucker?”</p>
+                                    <p>“Yeah look!”</p>
+                                    <p>“How can you tell? This dude’s face is fucked up… Could be anybody.”</p>
+                                    <p>“Is he dead?”</p>
+                                    <p>I still don’t remember what happened, but I now know I’m in danger. I decide to play dead. I can feel my gun in my left jacket holster… but I’m not ready to pull it yet. Do I have my neuropatch on still? I think… the left side of my face is messed up… but the neuropatch may still be intact. My mind is still fuzzy so I struggle to bring to mind the memory cipher I assigned the Shiva os... After a second I get it, I bring to mind the memory. It hurts to think… There I am, teenage me rubbing one out to porn in front of the computer screen, just as I am about to bust. My mom walks in. I hear the os acceptance chime in my mind. The memory is interrupted by the voice of my neuropatch Shiva os.</p>
+                                    <p>‘Axiom, It’s Shiva you are online. How can I assist you? You appear to be injured.’</p>
+                                    <p>‘Party Girl Protocol’ I answer back in my mind.</p>
+                                    <p>“Yeah he’s fuckin dead… look at him.”</p>
+                                    <p>“Man his face is fucked, if you fucked up his brain… We ain’t getting paid.”</p>
+                                    <p>Shit… I know I don’t have much time.</p>
+                                    <p>‘Shiva, who is nearby. What is their e.t.a?’ I ask</p>
+                            </div>
+                        </ons-carousel-item>
+                        <ons-carousel-item style="background-color: #085078;">
+                            <div class="item-label">BLUE</div>
+                        </ons-carousel-item>
+                        <ons-carousel-item style="background-color: #373B44;">
+                            <div class="item-label">DARK</div>
+                        </ons-carousel-item>
+                        <ons-carousel-item style="background-color: #D38312;">
+                            <div class="item-label">ORANGE</div>
+                        </ons-carousel-item>
+                        </ons-carousel>
+                    </ons-page>
+                </ons-page>
+              </template>
+              
+              <template id="settings.html">
+                <ons-page>
+                  <ons-toolbar>
+                    <div class="left">
+                      <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="md-menu"></ons-icon>
+                      </ons-toolbar-button>
+                    </div>
+                    <div class="center">
+                      Settings
+                    </div>
+                  </ons-toolbar>
+                </ons-page>
+              </template>
+              
+              <template id="about.html">
+                <ons-page>
+                  <ons-toolbar>
+                    <div class="left">
+                      <ons-toolbar-button onclick="fn.open()">
+                        <ons-icon icon="md-menu"></ons-icon>
+                      </ons-toolbar-button>
+                    </div>
+                    <div class="center">
+                      About
+                    </div>
+                  </ons-toolbar>
+                </ons-page>
+              </template>
+    
+
+</body>
 </html>

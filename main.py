@@ -1,19 +1,32 @@
 from kivy.app import App
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.filechooser import FileChooserListView
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.spinner import Spinner
+from kivy.uix.popup import Popup
+from kivy.uix.label import Label
 from kivy.lang import Builder
 import arweave_com
 import app_builder
 import file_action
+import os
 
 GUI = Builder.load_file("main.kv")
 
+def Dialog(title, content, width, height):
+        return Popup(title=title, content=content,size_hint=(None, None), size=(width, height))
+
+class FileSelector(BoxLayout):
+    def open(self, path, filename):
+        with open(os.path.join(path, filename[0])) as file:
+            print (file)
+
+    def selected(self, filename):
+        print (filename[0])
 
 class TabLayout(TabbedPanel):
-
-
     pass
 
 class AppButton(Button):
@@ -22,7 +35,7 @@ class AppButton(Button):
         if self.name is "DEPLOY_APP_BUTTON":
             arweave_com.deploy_app()
 
-        elif self.name is "TEST_APP_BUTTON":
+        elif self.name is "EST_APP_BUTTON":
             print("test app")
             file_action.open_test_page()
 
@@ -40,6 +53,19 @@ class AppButton(Button):
 
         elif self.name is "LOAD_WALLET_KEY_BUTTON":
             print("load wallet key")
+            label = Label(text='Hello world')
+            container = BoxLayout(orientation='vertical')
+ 
+            filechooser = FileChooserListView()
+            filechooser.bind(on_selection=lambda x: self.selected(filechooser.selection))
+    
+            open_btn = Button(text='open', size_hint=(1, .2))
+            open_btn.bind(on_release=lambda x: self.open(filechooser.path, filechooser.selection))
+    
+            container.add_widget(filechooser)
+            container.add_widget(open_btn)
+            popup = Dialog("Load Wallet Key Path",container, 400, 400)
+            popup.open()
 
         elif self.name is "CREATE_WALLET_KEY_BUTTON":
             print("create wallet key")
@@ -68,9 +94,11 @@ class ConsoleTextInput(TextInput):
     Handle console text inputs
     '''
     def on_kv_post(self, input):
-        host = str(arweave_com.network_info()["host"])
-        port = str(arweave_com.network_info()["port"])
-        self.text = "host: " + host + "    port: " + port 
+        print("on network info!")
+        # info = arweave_com.network_info()
+        # host = str(info["host"])
+        # port = str(info["port"])
+        # self.text = "host: " + host + "    port: " + port 
 
     def on_text_input_change(self):
         if self.name is "TITLE_TEXT_INPUT":

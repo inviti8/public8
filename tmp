@@ -4,13 +4,13 @@
     "response": {
         "network": "arweave.N.1",
         "version": 5,
-        "release": 30,
-        "height": 334342,
-        "current": "rELUt1QzQZ9qFJVrQTh73lFHBMCBDVB235Hw6QqPcC_qhYyK8rZSPJ-jHNygl_Ff",
-        "blocks": 358269,
-        "peers": 449,
+        "release": 32,
+        "height": 342168,
+        "current": "nlBvDtUCrfriMRWJC9YRvz-vQ5_rs3NLzoro288o71JlaCMQqLG68EgU2C39Jlel",
+        "blocks": 366257,
+        "peers": 491,
         "queue_length": 0,
-        "node_state_latency": 34
+        "node_state_latency": 11802
     },
-    "response_time": "778ms"
+    "response_time": "744ms"
 }

@@ -1,6 +1,19 @@
 #:kivy 1.11.1
 
 #Shared attributes
+<FileSelector>:
+    BoxLayout:
+        id: file_selector
+        Button
+            text: "open"
+            on_release: file_selector.open(filechooser.path, filechooser.selection)
+        FileChooserListView:
+            id: filechooser
+            on_selection: file_selector.selected(filechooser.selection)
+
+<Popup>:
+    color:  0, .7, .8, 1
+
 <AppButton>:
     color:  0, .7, .8, 1
 
@@ -28,9 +41,10 @@
     pos_hint: {'center_x': .5, 'center_y': .5}
     do_default_tab: False
     rows: 3
+    
 
     TabbedPanelItem:
-        text: 'PUBLICATE'
+        text: 'PUBLISH'
         GridLayout:
             cols: 2
 
@@ -214,67 +228,6 @@
                         size_hint: 1, 0.2
                         size: 50, 20
             
-                    
-    TabbedPanelItem:
-        text: 'SIGNATURE'
-        BoxLayout:
-            orientation: 'vertical'
-            padding: 20
-
-            BoxLayout:
-                orientation: 'horizontal'
-                padding: 20
-                size_hint: 1, 0.35
-
-                Label:
-                    text: 'Digital Signature'
-                    size_hint: 0.2, 0.5
-
-                AppSpinner:
-                    id: signature_spinner
-                    name: "SIGNATURE_SPINNER"
-                    text: "OFF"
-                    values: "OFF", "ON"
-                    size_hint: 0.6, 0.3
-                    size: 40, 50
-
-
-            BoxLayout:
-                orientation: 'vertical'
-                padding: 20
-                spacing: 10
-
-                Label:
-                    text: "Keys"
-                    size_hint: 1, 0.1
-
-                AppButton:
-                    id: generate_key_button
-                    name: "GENERATE_KEY_BUTTON"
-                    text: "GENERATE"
-                    size_hint: 1, 0.07
-
-                AppButton:
-                    id: load_key_button
-                    name: "LOAD_KEY_BUTTON"
-                    text: "LOAD"
-                    size_hint: 1, 0.07
-
-
-                BoxLayout:
-                    orientation: 'horizontal'
-                    padding: 20
-                    size_hint: 1, 0.15
-
-                    Label:
-                        text: "Key Path:"
-                        size_hint: 0.15, 0.5
-
-                    AppTextInput:
-                        id: key_path_text_input
-                        name: "KEY_PATH_TEXT_INPUT"
-                        size_hint: 0.7, 0.7
-
 
     TabbedPanelItem:
         text: 'WALLET'
@@ -296,11 +249,11 @@
                     name: "WALLET_KEY_TEXT_INPUT"
                     size_hint: 0.7, 0.2
 
-            AppButton:
-                id: load_wallet_key_button
-                name: "LOAD_WALLET_KEY_BUTTON"
-                text: "LOAD KEY FILE"
-                size_hint: 1, 0.1
+                AppButton:
+                    id: load_wallet_key_button
+                    name: "LOAD_WALLET_KEY_BUTTON"
+                    text: "LOAD KEY FILE"
+                    size_hint: 0.2, 0.2
 
             AppButton:
                 id: create_wallet_key_button

@@ -8,9 +8,10 @@ PATH = SCRIPT_PATH.replace(FILE_NAME, "")
 ARWEAVE = os.path.join(PATH, "arweave")
 
 def network_info():
-    tmp_file = os.path.join(PATH, "tmp")
-    os.system(ARWEAVE + " network-info > " + tmp_file)
-    return json.loads(open(tmp_file, 'r').read())
+    # tmp_file = os.path.join(PATH, "tmp")
+    # os.system(ARWEAVE + " network-info > " + tmp_file)
+    # return json.loads(open(tmp_file, 'r').read())
+    return "Disabled"
 
 def deploy_app():
     print("arweave deploy app")
