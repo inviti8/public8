@@ -1,18 +1,11 @@
 #:kivy 1.11.1
 
 #Shared attributes
-<FileSelector>:
-    BoxLayout:
-        id: file_selector
-        Button
-            text: "open"
-            on_release: file_selector.open(filechooser.path, filechooser.selection)
-        FileChooserListView:
-            id: filechooser
-            on_selection: file_selector.selected(filechooser.selection)
-
 <Popup>:
     color:  0, .7, .8, 1
+
+<FileChooserIconView>:
+    dirselect: True
 
 <AppButton>:
     color:  0, .7, .8, 1

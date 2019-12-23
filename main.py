@@ -1,12 +1,15 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.filechooser import FileChooserListView
+from kivy.uix.filechooser import FileChooserIconView
 from kivy.uix.tabbedpanel import TabbedPanel
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.spinner import Spinner
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from kivy.properties import ObjectProperty
+from kivy.properties import StringProperty
+from kivy.properties import ListProperty
 from kivy.lang import Builder
 import arweave_com
 import app_builder
@@ -18,18 +21,27 @@ GUI = Builder.load_file("main.kv")
 def Dialog(title, content, width, height):
         return Popup(title=title, content=content,size_hint=(None, None), size=(width, height))
 
-class FileSelector(BoxLayout):
-    def open(self, path, filename):
-        with open(os.path.join(path, filename[0])) as file:
-            print (file)
+def FileChooser_LoadWalletKey(button):
+    container = BoxLayout(orientation='vertical')
+    App.filechooser = FileChooserIconView()
+    
+    button = AppButton(text='SELECT', name="LOAD_WALLET_KEY_FILE_BUTTON", size_hint=(1, .2))
+    button.selected = App.filechooser.selection
+    button.bind(on_release=lambda x: button.LOAD_WALLET_KEY_BUTTON_selected(App.filechooser.selection))
 
-    def selected(self, filename):
-        print (filename[0])
+    container.add_widget(App.filechooser)
+    container.add_widget(button)
+
+    return container
 
 class TabLayout(TabbedPanel):
     pass
 
 class AppButton(Button):
+    filechooser = None
+    
+    def LOAD_WALLET_KEY_BUTTON_selected(self, selection_list):
+        print(App.filechooser.selection)
 
     def on_press(self):
         if self.name is "DEPLOY_APP_BUTTON":
@@ -53,19 +65,15 @@ class AppButton(Button):
 
         elif self.name is "LOAD_WALLET_KEY_BUTTON":
             print("load wallet key")
-            label = Label(text='Hello world')
-            container = BoxLayout(orientation='vertical')
- 
-            filechooser = FileChooserListView()
-            filechooser.bind(on_selection=lambda x: self.selected(filechooser.selection))
-    
-            open_btn = Button(text='open', size_hint=(1, .2))
-            open_btn.bind(on_release=lambda x: self.open(filechooser.path, filechooser.selection))
-    
-            container.add_widget(filechooser)
-            container.add_widget(open_btn)
-            popup = Dialog("Load Wallet Key Path",container, 400, 400)
-            popup.open()
+            container = FileChooser_LoadWalletKey(self)
+
+            App.popup = Dialog("Load Wallet Key Path",container, 400, 400)
+            App.popup.open()
+
+        elif self.name is "LOAD_WALLET_KEY_FILE_BUTTON":
+            print("this works")
+            App.popup.dismiss()
+            
 
         elif self.name is "CREATE_WALLET_KEY_BUTTON":
             print("create wallet key")
@@ -137,6 +145,14 @@ class AppSpinner(Spinner):
 class TabbedPanelApp(App):
     def build(self):
         self.title = 'PUBLIC8'
+
+        self.key_file_path = None
+
+        self.filechooser = None
+        self.popup = None
+
+    # def set_filechooser(self, filechooser):
+    #     self.filechoooser(filechooser)
 
         return TabLayout()
 
