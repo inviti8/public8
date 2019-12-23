@@ -11,37 +11,81 @@ from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
 from kivy.properties import ListProperty
 from kivy.lang import Builder
+from pathlib import Path
 import arweave_com
 import app_builder
 import file_action
 import os
+import string
 
 GUI = Builder.load_file("main.kv")
+HOME_PATH = str(Path.home())
+DRIVES = ['%s:' % d for d in string.ascii_uppercase if os.path.exists('%s:' % d)]
 
 def Dialog(title, content, width, height):
-        return Popup(title=title, content=content,size_hint=(None, None), size=(width, height))
+    '''
+    Create a dialog with a title, passed content, dimensions
+    '''
+    return Popup(title=title, content=content,size_hint=(None, None), size=(width, height))
+
+def DriveChooser(button):
+    '''
+    Dialog With button for each drive
+    '''
+    app = App.get_running_app()
+    container = BoxLayout(orientation='vertical')
+
+    for drive in DRIVES:
+        button = AppButton(text=drive, name="DRIVE_BUTTON_" + drive, size_hint=(1, 0.1))
+        container.add_widget(button)
+
+    return container
+
 
 def FileChooser_LoadWalletKey(button):
+    '''
+    Dialog for choosing Wallet Key File
+    '''
+    app = App.get_running_app()
+
     container = BoxLayout(orientation='vertical')
-    App.filechooser = FileChooserIconView()
+    app.filechooser = FileChooserIconView(path=app.root.current_drive)
     
     button = AppButton(text='SELECT', name="LOAD_WALLET_KEY_FILE_BUTTON", size_hint=(1, .2))
-    button.selected = App.filechooser.selection
-    button.bind(on_release=lambda x: button.LOAD_WALLET_KEY_BUTTON_selected(App.filechooser.selection))
+    button.selected = app.filechooser.selection
+    button.bind(on_press=lambda x: button.LOAD_WALLET_KEY_BUTTON_pressed(app.filechooser.selection))
 
-    container.add_widget(App.filechooser)
+    container.add_widget(app.filechooser)
     container.add_widget(button)
 
     return container
 
 class TabLayout(TabbedPanel):
-    pass
+    '''
+    Tab layout, access via app.root
+    '''
+    current_drive = StringProperty(HOME_PATH)
+    key_file_path = StringProperty(None)
+    drivechooser = ObjectProperty(None)
+    filechooser = ObjectProperty(None)
+    popup = ObjectProperty(None)
+    next_popup = ObjectProperty(None)
 
 class AppButton(Button):
+    '''
+    Handle logic for all app specific buttons
+    '''
     filechooser = None
     
-    def LOAD_WALLET_KEY_BUTTON_selected(self, selection_list):
-        print(App.filechooser.selection)
+    def LOAD_WALLET_KEY_BUTTON_pressed(self, selection_list):
+        '''
+        Set the wallet key file path, set edit text field
+        TODO: Validate file type
+        '''
+        if len(selection_list) > 0:
+            app = App.get_running_app()
+            text = selection_list[0]
+            app.root.ids.wallet_key_text_input.text = text
 
     def on_press(self):
         if self.name is "DEPLOY_APP_BUTTON":
@@ -63,17 +107,40 @@ class AppButton(Button):
         elif self.name is "LOAD_KEY_BUTTON":
             print("load signature keys")
 
-        elif self.name is "LOAD_WALLET_KEY_BUTTON":
-            print("load wallet key")
-            container = FileChooser_LoadWalletKey(self)
+        elif "DRIVE_BUTTON_" in self.name:
+            '''
+            Catch the drive button catch pass to current drive
+            reassign app.next_popup to app.popup
+            '''
+            app = App.get_running_app()
+            app.root.current_drive = self.text
+            app.popup.dismiss()
+            app.popup = app.next_popup
+            app.popup.open()
 
-            App.popup = Dialog("Load Wallet Key Path",container, 400, 400)
-            App.popup.open()
+        elif self.name is "LOAD_WALLET_KEY_BUTTON":
+            '''
+            If there are multiple drives prompt choose drive,
+            else open dialog in home directory
+            '''
+            app = App.get_running_app()
+            container = None
+
+            if len(DRIVES) > 1:
+                container = DriveChooser(self)
+                next_container = FileChooser_LoadWalletKey(self)
+                app.popup = Dialog("Select Drive:",container, 400, 400)
+                app.next_popup = Dialog("Load Wallet Key Path",next_container, 400, 400)
+                app.popup.open()
+            else:
+                container = FileChooser_LoadWalletKey(self)
+                app.popup = Dialog("Load Wallet Key Path",container, 400, 400)
+                app.popup.open()
 
         elif self.name is "LOAD_WALLET_KEY_FILE_BUTTON":
             print("this works")
-            App.popup.dismiss()
-            
+            app = App.get_running_app()
+            app.popup.dismiss()     
 
         elif self.name is "CREATE_WALLET_KEY_BUTTON":
             print("create wallet key")
@@ -143,16 +210,9 @@ class AppSpinner(Spinner):
 
     
 class TabbedPanelApp(App):
+
     def build(self):
         self.title = 'PUBLIC8'
-
-        self.key_file_path = None
-
-        self.filechooser = None
-        self.popup = None
-
-    # def set_filechooser(self, filechooser):
-    #     self.filechoooser(filechooser)
 
         return TabLayout()
 
