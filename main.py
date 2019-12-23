@@ -78,7 +78,7 @@ def FileChooser_LoadWalletKey(button):
 
     return container
 
-def FileChooser_Flow(button, next_chooser):
+def FileChooser_Flow(button, next_chooser, next_chooser_text):
     app = App.get_running_app()
     container = None
 
@@ -86,11 +86,11 @@ def FileChooser_Flow(button, next_chooser):
         container = DriveChooser(button)
         next_container = next_chooser(button)
         app.popup = Dialog("Select Drive:",container, 400, 400)
-        app.next_popup = Dialog("Load Content Path", next_container, 400, 400)
+        app.next_popup = Dialog(next_chooser_text, next_container, 400, 400)
 
     else:
         container = FileChooser_LoadContent(button)
-        app.popup = Dialog("Load Content Path", container, 400, 400)
+        app.popup = Dialog(next_chooser_text, container, 400, 400)
 
     return container
 
@@ -133,7 +133,7 @@ class AppButton(Button):
 
         elif self.name is "CONTENT_PATH_LOAD_BUTTON":
             print("load content path")
-            FileChooser_Flow(self, FileChooser_LoadContent)
+            FileChooser_Flow(self, FileChooser_LoadContent, "LOAD CONTENT PATH:")
             app.popup.open()
 
         elif self.name is "THEME_LOAD_BUTTON":
@@ -164,7 +164,7 @@ class AppButton(Button):
             else open dialog in home directory
             '''
             app = App.get_running_app()
-            FileChooser_Flow(self, FileChooser_LoadWalletKey)
+            FileChooser_Flow(self, FileChooser_LoadWalletKey, "LOAD WALLET KEY FILE")
             app.popup.open()
 
         elif self.name is "LOAD_WALLET_KEY_FILE_BUTTON":
