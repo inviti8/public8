@@ -17,6 +17,7 @@ import app_builder
 import file_action
 import os
 import string
+import ntpath
 
 GUI = Builder.load_file("main.kv")
 HOME_PATH = str(Path.home())
@@ -43,16 +44,16 @@ def DriveChooser(button):
 
 def FileChooser_LoadContent(button):
     '''
-    Dialog for choosing Wallet Key File
+    Dialog for choosing Wallet Key File.
     '''
     app = App.get_running_app()
 
     container = BoxLayout(orientation='vertical')
     app.filechooser = FileChooserIconView(path=app.root.current_drive)
     
-    button = AppButton(text='SELECT', name="LOAD_CONTENT_BUTTON", size_hint=(1, .2))
+    button = AppButton(text='SELECT', name="LOAD_CONTENT_POPUP_BUTTON", size_hint=(1, .2))
     button.selected = app.filechooser.selection
-    button.bind(on_press=lambda x: button.LOAD_WALLET_KEY_BUTTON_pressed(app.filechooser.selection))
+    button.bind(on_press=lambda x: button.LOAD_CONTENT_POPUP_BUTTON_pressed(app.filechooser.selection))
 
     container.add_widget(app.filechooser)
     container.add_widget(button)
@@ -79,6 +80,10 @@ def FileChooser_LoadWalletKey(button):
     return container
 
 def FileChooser_Flow(button, next_chooser, next_chooser_text):
+    '''
+    Handle redirect flow for sile selection
+    if multiple drives are available
+    '''
     app = App.get_running_app()
     container = None
 
@@ -93,6 +98,31 @@ def FileChooser_Flow(button, next_chooser, next_chooser_text):
         app.popup = Dialog(next_chooser_text, container, 400, 400)
 
     return container
+
+def ValidateContentPath(path):
+    result = None
+    isPath = os.path.isdir(path)
+        
+    if isPath:
+        result = path
+    else:
+        fileName = ntpath.basename(path).lower()
+        result = path.replace(fileName, "")
+
+    return result
+
+def ValidateWalletKeyPath(path):
+    result = None
+    file = os.path.isfile(path)
+        
+    if file:
+        fileName = ntpath.basename(path).lower()
+        extension = fileName.split(".")
+        if "json" in extension:
+            result = path
+
+    return result
+
 
 
 class TabLayout(TabbedPanel):
@@ -112,45 +142,60 @@ class AppButton(Button):
     '''
     app = App.get_running_app()
     filechooser = None
+
+    def LOAD_CONTENT_POPUP_BUTTON_pressed(self, selection_list):
+        '''
+        Set the content path
+        TODO: Validate to onlu accept path
+        '''
+        if len(selection_list) > 0:
+            app = App.get_running_app()
+            path = selection_list[0]
+            validPath = ValidateContentPath(path)
+
+            if validPath is not None:
+                app.root.ids.content_path_text_input.text = validPath
     
     def LOAD_WALLET_KEY_BUTTON_pressed(self, selection_list):
         '''
         Set the wallet key file path, set edit text field
-        TODO: Validate file type
         '''
         if len(selection_list) > 0:
             app = App.get_running_app()
-            text = selection_list[0]
-            app.root.ids.wallet_key_text_input.text = text
+            path = selection_list[0]
+            validPath = ValidateWalletKeyPath(path)
+
+            if validPath is not None:
+                app.root.ids.wallet_key_text_input.text = validPath
 
     def on_release(self):
+        app = App.get_running_app()
+
         if self.name is "DEPLOY_APP_BUTTON":
             arweave_com.deploy_app()
 
-        elif self.name is "EST_APP_BUTTON":
+        elif self.name is "TEST_APP_BUTTON":
             print("test app")
             file_action.open_test_page()
 
         elif self.name is "CONTENT_PATH_LOAD_BUTTON":
             print("load content path")
+            
             FileChooser_Flow(self, FileChooser_LoadContent, "LOAD CONTENT PATH:")
             app.popup.open()
 
+        elif self.name is "LOAD_CONTENT_POPUP_BUTTON":
+            print("content path selected")
+            app.popup.dismiss()
+
         elif self.name is "THEME_LOAD_BUTTON":
             print("load theme")
-
-        elif self.name is "GENERATE_KEY_BUTTON":
-            print("generate signature keys")
-        
-        elif self.name is "LOAD_KEY_BUTTON":
-            print("load signature keys")
 
         elif "DRIVE_BUTTON_" in self.name:
             '''
             Catch the drive button catch pass to current drive
             reassign app.next_popup to app.popup
             '''
-            app = App.get_running_app()
             drive = self.text + str(os.sep)
             app.filechooser.path = drive
             app.root.current_drive = drive
@@ -163,13 +208,11 @@ class AppButton(Button):
             If there are multiple drives prompt choose drive,
             else open dialog in home directory
             '''
-            app = App.get_running_app()
             FileChooser_Flow(self, FileChooser_LoadWalletKey, "LOAD WALLET KEY FILE")
             app.popup.open()
 
         elif self.name is "LOAD_WALLET_KEY_FILE_BUTTON":
-            print("this works")
-            app = App.get_running_app()
+            print("wallet key file selected")
             app.popup.dismiss()     
 
         elif self.name is "CREATE_WALLET_KEY_BUTTON":
