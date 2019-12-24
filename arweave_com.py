@@ -1,5 +1,6 @@
 import os
 import json
+import html_parser
 
 SCRIPT_PATH = scriptpath = os.path.realpath(__file__)
 FILE_NAME = os.path.basename(SCRIPT_PATH)

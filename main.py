@@ -100,14 +100,16 @@ def FileChooser_Flow(button, next_chooser, next_chooser_text):
     return container
 
 def ValidateContentPath(path):
+    app = App.get_running_app()
     result = None
-    isPath = os.path.isdir(path)
+    file = os.path.isfile(path)
         
-    if isPath:
-        result = path
-    else:
+    if file:
         fileName = ntpath.basename(path).lower()
-        result = path.replace(fileName, "")
+        extension = fileName.split(".")
+
+        if app.content_type.lower() in extension:
+            result = path
 
     return result
 
@@ -123,6 +125,13 @@ def ValidateWalletKeyPath(path):
 
     return result
 
+def ProcessContentFile(file_path):
+    app = App.get_running_app()
+
+    if app.content_type.lower() == "docx":
+        content = app_builder.docx_to_html(file_path)
+        # print(content.messages)
+        # print(content.value)
 
 
 class TabLayout(TabbedPanel):
@@ -130,11 +139,15 @@ class TabLayout(TabbedPanel):
     Tab layout, access via app.root
     '''
     current_drive = StringProperty(HOME_PATH)
+    content_type = StringProperty(None)
     key_file_path = StringProperty(None)
     drivechooser = ObjectProperty(None)
     filechooser = ObjectProperty(None)
     popup = ObjectProperty(None)
     next_popup = ObjectProperty(None)
+
+    def on_content_type_change(self, value):
+        print(value)
 
 class AppButton(Button):
     '''
@@ -155,6 +168,9 @@ class AppButton(Button):
 
             if validPath is not None:
                 app.root.ids.content_path_text_input.text = validPath
+                ProcessContentFile(validPath)
+            else:
+                app.root.ids.content_path_text_input.text = "INVALID SELECTION!"
     
     def LOAD_WALLET_KEY_BUTTON_pressed(self, selection_list):
         '''
@@ -167,6 +183,8 @@ class AppButton(Button):
 
             if validPath is not None:
                 app.root.ids.wallet_key_text_input.text = validPath
+            else:
+                app.root.ids.wallet_key_text_input.text = "INVALID SELECTION!"
 
     def on_release(self):
         app = App.get_running_app()
@@ -176,6 +194,7 @@ class AppButton(Button):
 
         elif self.name is "TEST_APP_BUTTON":
             print("test app")
+            
             file_action.open_test_page()
 
         elif self.name is "CONTENT_PATH_LOAD_BUTTON":
@@ -262,12 +281,14 @@ class AppSpinner(Spinner):
 
     def on_spinner_change(self):
         print("on spinner change")
+        app = App.get_running_app()
 
         if self.name is "TYPE_SPINNER":
             app_builder.ARWEAVE_APP_TYPE = self.text
 
         elif self.name is "CONTENT_TYPE_SPINNER":
             app_builder.CONTENT_TYPE = self.text
+            app.content_type = self.text
         
         elif self.name is "THEME_SPINNER":
             app_builder.THEME = self.text

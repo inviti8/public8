@@ -30,17 +30,16 @@
       display: table-cell;
       vertical-align: middle;
       color: white;
-      line-height: 1;
-      font-size: 48px;
-      font-weight: bold;
+      font-size: calc(14px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
+      line-height: calc(1.3em + (1.5 - 1.2) * ((100vw - 300px)/(1600 - 300)));
       padding-right: 5vw;
       padding-left: 5vw;
       overflow-y: auto;
       height:95vh;
     }
     p{
-        font-size: 1.5vh;
-        line-height: 2.5vh;
+        font-size: calc(14px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
+        line-height: calc(1.3em + (1.5 - 1.2) * ((100vw - 300px)/(1600 - 300)));
         margin: 0;
         padding: 0;
     }
@@ -81,7 +80,7 @@
                     </div>
                   </ons-toolbar>
                   <ons-page>
-                        <ons-carousel id="myCarousel" initial-index="2" swipeable overscrollable auto-scroll auto-refresh fullscreen auto-scroll-ratio="0.2">
+                        <ons-carousel id="myCarousel" initial-index="0" swipeable overscrollable auto-scroll auto-refresh fullscreen auto-scroll-ratio="0.2">
                         <ons-carousel-item style="background-color: gray; overflow-y: scroll; height:90vh;">
                             <div class="item-label" >
                                     <p>NAKED</p>
