@@ -99,14 +99,15 @@
                     size_hint: 1, 0.65
 
                     Label:
-                        text: "References"
+                        text: "In Line CSS"
                         size_hint: 0.15, 0.1
 
                     AppTextInput:
-                        id: references_text_input
-                        name: "REFERENCES_TEXT_INPUT"
-                        text: "REFERENCES:"
-                        size: 50, 44
+                        id: css_text_input
+                        name: "CSS_TEXT_INPUT"
+                        text: root.update_css(self)
+                        size: 25, 22
+                        font_size: 11
                         
 
             BoxLayout:
@@ -191,6 +192,22 @@
                         text: "splitter_carousel"
                         values: "splitter_carousel", "None"
                         size_hint: 0.5, 0.7
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    padding: 20
+                    size_hint: 1, 0.15
+
+                    Label:
+                        text: 'Page Direction'
+                        size_hint: 0.2, 0.5
+                        
+                    AppSpinner:
+                        id: page_direction_spinner
+                        name: "PAGE_DIRECTION_SPINNER"
+                        text: "horizontal"
+                        values: "horizontal", "vertical"
+                        size_hint: 0.3, 0.7
 
                 BoxLayout:
                     orientation: 'horizontal'

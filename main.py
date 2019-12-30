@@ -18,6 +18,11 @@ import file_action
 import os
 import string
 import ntpath
+import time
+
+SCRIPT_PATH = scriptpath = os.path.realpath(__file__)
+FILE_NAME = os.path.basename(SCRIPT_PATH)
+PATH = SCRIPT_PATH.replace(FILE_NAME, "")
 
 GUI = Builder.load_file("main.kv")
 HOME_PATH = str(Path.home())
@@ -130,8 +135,10 @@ def ProcessContentFile(file_path):
 
     if app.content_type.lower() == "docx":
         content = app_builder.docx_to_html(file_path)
-        # print(content.messages)
-        # print(content.value)
+        tmp_file = os.path.join(PATH, "tmp")
+        #os.system(content.value  + " > " + tmp_file)
+        #print(content.messages)
+        print(content.value)
 
 
 class TabLayout(TabbedPanel):
@@ -146,6 +153,9 @@ class TabLayout(TabbedPanel):
     popup = ObjectProperty(None)
     next_popup = ObjectProperty(None)
 
+    def update_css(self, text):
+        return file_action.UpdateCss()
+
     def on_content_type_change(self, value):
         print(value)
 
@@ -159,7 +169,6 @@ class AppButton(Button):
     def LOAD_CONTENT_POPUP_BUTTON_pressed(self, selection_list):
         '''
         Set the content path
-        TODO: Validate to onlu accept path
         '''
         if len(selection_list) > 0:
             app = App.get_running_app()
@@ -244,7 +253,7 @@ class AppButton(Button):
 
 class AppTextInput(TextInput):
     '''
-    Handle text inputs
+    Handle text inputs update vars as the text is updated
     '''
     def on_text_input_change(self):
         if self.name is "TITLE_TEXT_INPUT":
@@ -253,8 +262,8 @@ class AppTextInput(TextInput):
         elif self.name is "AUTHOR_TEXT_INPUT":
             app_builder.AUTHOR = self.text
             
-        elif self.name is "REFERNCES_TEXT_INPUT":
-            app_builder.REFERENCES = self.text
+        elif self.name is "CSS_TEXT_INPUT":
+            app_builder.CSS = self.text
 
 class ConsoleTextInput(TextInput):
     '''
@@ -277,11 +286,12 @@ class AppSpinner(Spinner):
     '''
     def on_kv_post(self, input):
         if self.name is "TEMPLATE_SPINNER":
-            file_action.TEMPLATE = self.text
+            file_action.TEMPLATE_DIR = self.text
 
     def on_spinner_change(self):
         print("on spinner change")
         app = App.get_running_app()
+        print(app.root)
 
         if self.name is "TYPE_SPINNER":
             app_builder.ARWEAVE_APP_TYPE = self.text
@@ -294,13 +304,13 @@ class AppSpinner(Spinner):
             app_builder.THEME = self.text
 
         elif self.name is "TEMPLATE_SPINNER":
-            file_action.TEMPLATE = self.text
-
-        elif self.name is "SIGNATURE_SPINNER":
-            if self.text is "ON":
-                app_builder.SIGN_APP = True
-            else:
-                app_builder.SIGN_APP = False
+            file_action.TEMPLATE_DIR = self.text
+            if app.root != None:
+                if file_action.TEMPLATE_DIR != None and file_action.TEMPLATE_DIR != 'None':
+                    app.root.ids.css_text_input.text = file_action.UpdateCss()
+                
+        elif self.name is "PAGE_DIRECTION_SPINNER":
+            file_action.PAGE_DIRECTION = self.text
 
     
 class TabbedPanelApp(App):
