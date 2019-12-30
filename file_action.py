@@ -11,6 +11,7 @@ PATH = SCRIPT_PATH.replace(FILE_NAME, "")
 CSS = None
 PAGE_DIRECTION = None
 TEMPLATE_DIR = None
+THEME = "css/onsen-css-components.css"
 TEMPLATE_FILE = "index.html.j2"
 TEMPLATE_RENDER_DATA = "index_render_data.py"
 PAGE = "index.html"
@@ -32,9 +33,21 @@ def open_test_page():
         print(template_file)
         print(index_render_data.DATA[TEMPLATE_DIR])
         template_data = index_render_data.DATA[TEMPLATE_DIR]
-        
+
         if PAGE_DIRECTION != None:
             template_data.update({"page_direction": PAGE_DIRECTION})
+
+        print(THEME)
+
+        if THEME == "Dark":
+            template_data.update({"css_theme": "css/dark-onsen-css-components.css"})
+
+        elif THEME == "Light":
+            template_data.update({"css_theme": "css/onsen-css-components.css"})
+
+        elif THEME == "Old":
+            template_data.update({"css_theme": "css/old-onsen-css-components.css"})
+
 
         render_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(template_path))
         output_text = render_environment.get_template(TEMPLATE_FILE).render(index_render_data.DATA[TEMPLATE_DIR])

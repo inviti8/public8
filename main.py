@@ -302,6 +302,7 @@ class AppSpinner(Spinner):
         
         elif self.name is "THEME_SPINNER":
             app_builder.THEME = self.text
+            file_action.THEME = self.text
 
         elif self.name is "TEMPLATE_SPINNER":
             file_action.TEMPLATE_DIR = self.text
