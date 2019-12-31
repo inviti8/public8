@@ -57,8 +57,12 @@ def open_test_page():
 
         if CONTENT != None:
             parser = html_parser.DocHTMLParser()
+            parser.reset()
+            parser.reset_current_char_count()
             parser.feed(CONTENT)
-            template_data.update({"content_list": parser.get_content_html_list()})
+            content = parser.get_content_html_list()
+            print(content)
+            template_data.update({"content_list": content})
 
 
         render_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(template_path))

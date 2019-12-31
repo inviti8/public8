@@ -4,7 +4,7 @@ from html.entities import name2codepoint
 HTML_PARSE_OBJECT = {}
 
 class DocHTMLParser(HTMLParser):
-    CHAR_PER_PAGE = 1000
+    CHAR_PER_PAGE = 4500
 
     current_tag = None
     current_char_count = 0
@@ -32,35 +32,38 @@ class DocHTMLParser(HTMLParser):
     def handle_starttag(self, tag, attrs):
         # print("Start tag:", tag)
         self.current_tag = tag
+        self.current_page_html = self.current_page_html + "<" + tag + ">"
         # for attr in attrs:
         #     print("     attr:", attr)
 
     def handle_endtag(self, tag):
-        print("End tag  :", tag)
+        page_count = self.current_page_count
+
+        self.current_page_html = self.current_page_html + "</" + tag + ">"
+
+        if self.current_char_count >= self.CHAR_PER_PAGE:
+            # print("THIS WORKS!!!!!!!!!!!!!!!!!!!!")
+            # print(self.current_page_html)
+            # print(self.current_char_count)
+            self.content_html_list.insert(page_count, self.current_page_html)
+            self.reset_current_char_count()
 
     def handle_data(self, data):
-        html = None
         current_count = self.current_char_count + len(data)
-        page_count = self.current_page_count
 
         if self.current_tag == "p":
             self.current_char_count = current_count + len(data)
-            html = self.p_open + data + self.p_close
+            # html = self.p_open + data + self.p_close
 
-        if self.current_tag == "table":
-            html = self.table_open + data + self.table_close
+        self.current_page_html = self.current_page_html + data
 
-        if html != None:
-            self.current_page_html = self.current_page_html + html
+        # if self.current_tag == "table":
+        #     html = self.table_open + data + self.table_close
+
+        # if html != None:
+        #     self.current_page_html = self.current_page_html + html
             # print("Data     :", data)
 
-        if self.current_char_count >= self.CHAR_PER_PAGE:
-            print("THIS WORKS!!!!!!!!!!!!!!!!!!!!")
-            print(self.current_page_html)
-            print(self.current_char_count)
-            self.current_char_count = 0
-            self.content_html_list.insert(page_count, html)
-            self.reset_current_char_count()
 
     # def handle_comment(self, data):
     #     print("Comment  :", data)
