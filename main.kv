@@ -12,12 +12,14 @@
 
 <AppSpinner>:
     size: 30, 44
+    size_hint: 1, 0.85
     color:  0, .7, .8, 1
     on_text: self.on_spinner_change()
 
 <AppTextInput>:
     background_color: 0, .5, .65, 1
     on_text: self.on_text_input_change()
+    font_size: 10
 
 <ConsoleTextInput>:
     background_color: 0, 0, 0, 1
@@ -46,60 +48,61 @@
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    padding: 20
+                    padding: 10
                     size_hint: 1, 0.15
-
-                    Label:
-                        text: 'Type'
-                        size_hint: 0.15, 0.5
-                        
+         
                     AppSpinner:
                         id: type_spinner
                         name: "TYPE_SPINNER"
                         text: "Journalism"
                         values: "Journalism", "Literary", "Graphic"
-                        size_hint: 0.5, 0.7
 
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    padding: 20
+                    padding: 10
                     size_hint: 1, 0.15
-
-                    Label:
-                        text: "Title"
-                        size_hint: 0.15, 0.5
 
                     AppTextInput:
                         id: title_text_input
                         name: "TITLE_TEXT_INPUT"
-                        size_hint: 0.7, 0.7
+                        text: "Enter Title"
+                        size_hint: 1, 0.7
                         background_color: 0, .5, .65, 1
                         multiline: False
 
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    padding: 20
+                    padding: 10
                     size_hint: 1, 0.15
-
-                    Label:
-                        text: "Author"
-                        size_hint: 0.15, 0.5
 
                     AppTextInput:
                         id: author_text_input
                         name: "AUTHOR_TEXT_INPUT"
-                        size_hint: 0.7, 0.7
+                        text: "Enter Author"
+                        size_hint: 1, 0.7
+
+                BoxLayout:
+                    orientation: 'horizontal'
+                    padding: 10
+                    size_hint: 1, 0.15
+
+                    AppSpinner:
+                        id: img_layout_spinner
+                        name: "IMG_LAYOUT_SPINNER"
+                        text: "Image Align:Left"
+                        values: "Image Align:Left", "Image Align:Right", "Image Align:Alternate"
+                        size_hint: 0.5, 0.7
 
 
                 BoxLayout:
                     orientation: 'vertical'
-                    padding: 20
+                    padding: 10
                     size_hint: 1, 0.65
 
                     Label:
-                        text: "In Line CSS"
+                        text: "Inline CSS"
                         size_hint: 0.15, 0.1
 
                     AppTextInput:
@@ -115,35 +118,27 @@
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    padding: 20
+                    padding: 10
                     size_hint: 1, 0.15
-
-                    Label:
-                        text: 'Content Type'
-                        size_hint: 0.35, 0.5
 
                     AppSpinner:
                         id: content_type_spinner
                         name: "CONTENT_TYPE_SPINNER"
                         text: "Docx"
                         values: "Docx", "Json"
-                        size_hint: 0.6, 0.7
-                        size: 30, 44
+
 
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    padding: 20
+                    padding: 10
                     size_hint: 1, 0.15
-
-                    Label:
-                        text: "Content Path"
-                        size_hint: 0.35, 0.5
 
                     AppTextInput:
                         id: content_path_text_input
                         name: "CONTENT_PATH_TEXT_INPUT"
-                        size_hint: 0.7, 0.7
+                        size_hint: 1, 0.7
+                        text: "Load Content Source"
                         size: 50, 44
                         font_size: 11
 
@@ -155,21 +150,15 @@
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    padding: 20
+                    padding: 10
                     size_hint: 1, 0.15
-
-                    Label:
-                        text: 'Theme'
-                        size_hint: 0.15, 0.5
 
                     AppSpinner:
                         id: theme_spinner
                         name: "THEME_SPINNER"
-                        text: "Dark"
-                        values: "Dark", "Light", "Old"
+                        text: "Dark Theme"
+                        values: "Dark Theme", "Light Theme", "Gray Theme"
                         size_hint: 0.5, 0.7
-                        size: 30, 44
-                        color:  0, .7, .8, 1
 
                     AppButton:
                         id: theme_load_button
@@ -179,39 +168,29 @@
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    padding: 20
+                    padding: 10
                     size_hint: 1, 0.15
-
-                    Label:
-                        text: 'Template'
-                        size_hint: 0.15, 0.5
                         
                     AppSpinner:
                         id: template_spinner
                         name: "TEMPLATE_SPINNER"
                         text: "splitter_carousel"
                         values: "splitter_carousel", "None"
-                        size_hint: 0.5, 0.7
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    padding: 20
+                    padding: 10
                     size_hint: 1, 0.15
-
-                    Label:
-                        text: 'Direction'
-                        size_hint: 0.15, 0.5
                         
                     AppSpinner:
                         id: page_direction_spinner
                         name: "PAGE_DIRECTION_SPINNER"
                         text: "horizontal"
                         values: "horizontal", "vertical"
-                        size_hint: 0.5, 0.7
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    padding: 20
+                    padding: 10
                     size_hint: 1, 0.25
 
                     AppButton:
@@ -229,7 +208,7 @@
                         
                 BoxLayout:
                     orientation: 'vertical'
-                    padding: 20
+                    padding: 10
                     size_hint: 1, 0.2
 
                     ConsoleTextInput:
@@ -244,11 +223,11 @@
         text: 'ARWEAVE'
         BoxLayout:
             orientation: 'vertical'
-            padding: 20
+            padding: 10
             spacing: 10
             BoxLayout:
                 orientation: 'horizontal'
-                padding: 20
+                padding: 10
                 size_hint: 1, 0.35
 
                 Label:
@@ -281,7 +260,7 @@
 
             BoxLayout:
                 orientation: 'vertical'
-                padding: 20
+                padding: 10
                 size_hint: 1, 0.35
 
                 Label:

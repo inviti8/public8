@@ -136,9 +136,10 @@ def ProcessContentFile(file_path):
     if app.content_type.lower() == "docx":
         content = app_builder.docx_to_html(file_path)
         tmp_file = os.path.join(PATH, "tmp")
+        file_action.CONTENT = content.value
         #os.system(content.value  + " > " + tmp_file)
-        #print(content.messages)
-        print(content.value)
+        print(content.messages)
+        # print(content.value)
 
 
 class TabLayout(TabbedPanel):
@@ -258,12 +259,14 @@ class AppTextInput(TextInput):
     def on_text_input_change(self):
         if self.name is "TITLE_TEXT_INPUT":
             app_builder.ARWEAVE_APP_TITLE = self.text
+            file_action.TITLE = self.text
 
         elif self.name is "AUTHOR_TEXT_INPUT":
             app_builder.AUTHOR = self.text
             
         elif self.name is "CSS_TEXT_INPUT":
-            app_builder.CSS = self.text
+            print("update css:")
+            file_action.CSS = self.text
 
 class ConsoleTextInput(TextInput):
     '''

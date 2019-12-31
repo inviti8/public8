@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carousel</title>
   <link rel="stylesheet" href= "css/onsenui.css">
-  <link rel="stylesheet" href= css/old-onsen-css-components.css >
+  <link rel="stylesheet" href= css/dark-onsen-css-components.css >
 
   <script src="js/onsenui.js"></script>
 
@@ -17,6 +17,27 @@
         menu.open();
         };
 
+        var prev = function() {
+          var carousel = document.getElementById('AppCarousel');
+          carousel.prev();
+        };
+
+        var next = function() {
+          var carousel = document.getElementById('AppCarousel');
+          carousel.next();
+        };
+
+        var setPageIndex = function(index) {
+          var carousel = document.getElementById('AppCarousel');
+          carousel.setPageIndex(index)
+        };
+
+        ons.ready(function() {
+          var carousel = document.addEventListener('postchange', function(event) {
+            console.log('Changed to ' + event.activeIndex)
+          });
+        });
+
         window.fn.load = function(page) {
         var content = document.getElementById('content');
         var menu = document.getElementById('menu');
@@ -27,10 +48,9 @@
 
   <style>
      
-    .item-label {
+    .page {
       display: table-cell;
       vertical-align: middle;
-      color: white;
       font-size: calc(14px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
       line-height: calc(1.3em + (1.5 - 1.2) * ((100vw - 300px)/(1600 - 300)));
       padding-right: 5vw;
@@ -71,6 +91,15 @@
                       <ons-list-item onclick="fn.load('about.html')" tappable>
                         About
                       </ons-list-item>
+                      <ons-list-item expandable>
+                        Contents
+                        <div class="expandable-content">
+                          <ons-list>
+                            <ons-list-item tappable>1</ons-list-item>
+                            <ons-list-item tappable>2</ons-list-item>
+                          </ons-list>
+                        </div>
+                      </ons-list-item>
                     </ons-list>
                   </ons-page>
                 </ons-splitter-side>
@@ -86,25 +115,84 @@
                       </ons-toolbar-button>
                     </div>
                     <div class="center">
-                      Main
+                      Enter Title
                     </div>
                   </ons-toolbar>
                   <ons-page>
-                        <ons-carousel id="myCarousel" initial-index="0" swipeable overscrollable auto-scroll auto-refresh fullscreen auto-scroll-ratio="0.2" direction=horizontal>
-                        <ons-carousel-item style="background-color: gray; overflow-y: scroll; height:90vh;">
-                            <div class="item-label" >
-                            </div>
-                        </ons-carousel-item>
-                        <ons-carousel-item style="background-color: #085078;">
-                            <div class="item-label">BLUE</div>
-                        </ons-carousel-item>
-                        <ons-carousel-item style="background-color: #373B44;">
-                            <div class="item-label">DARK</div>
-                        </ons-carousel-item>
-                        <ons-carousel-item style="background-color: #D38312;">
-                            <div class="item-label">ORANGE</div>
-                        </ons-carousel-item>
-                        </ons-carousel>
+                        <ons-carousel id="AppCarousel" initial-index="0" swipeable overscrollable auto-scroll auto-refresh fullscreen auto-scroll-ratio="0.2" direction=horizontal>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>I still don't remember what happened, but I now know I'm in danger. I decide to play dead. I can feel my gun in my left jacket holster… but I'm not ready to pull it yet. Do I have my neuropatch on still? I think… the left side of my face is messed up… but the </p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>I am pretty sure that it's my car smoldering behind me. I remember I have an auto service droids in my trunk. If I can access it… it might buy me some time.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>DERRRR--ANGER DANGER I hear the droid is still continuing forward.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>[Chapter 0.1 -End]</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>I opened my right eye a little, since I figure Lexi must've gotten their attention. They've both turned away. The one holding the skull saw is short and chubby, kinda greasy looking. A white dude with his hair shaved in a bleach blonde polka-dot pattern. He has a gothic number eighteen under his left eye, and a triangular glow tat on the back of his neck, probably a neuropatch implant. He is wearing a jeweled letter “R” around his neck on a thick chain. Its sitting squarely in the middle of his “King Rufus” shirt. The other guy has a strong build, square jaw and a bald head. Id guess he might be Puerto Rican. He isn't really flashy, white tee and jeans. He has a glow tat that looks like the number eighteen written in circuit-like pattern on the back of his neck that stands out, also likely a neuropatch implant. The eighteen tells me they are Thrall Eights… So I must be on the outskirts of Federal City. Whoever hit me was either too cheap or didn't respect me enough to send professionals. Looks like I'm inside a parking garage of some kind. It's mostly empty and pretty dilapidated. The two thugs are looking in the direction of Lexi, who is drunkenly stumbling down the ramp.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>Eyes glazed over he nods looking slightly nervous, and grimacing as though he wants to say something but he can't. He's changed his manner of speaking, which tells me whoever the client is… He isnt street level.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>I close my eyes, I see her eyes, her smile… hear her laugh. Below us the twinkle of the city lights. I feel my heartstrings. The os acceptance chime rings out.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>The effect is instantaneous and I feel energized. I pull out my gun. A seventy caliber magnetic propulsion pistol with an internally embedded smart seek processor and custom firmware. Capacity of twenty-two multi purpose zero point rounds. Based loosely on the Chiappa Rhino in aesthetics. It's a modification of my own design. I'll need information from one of these guys so can get these hitters off me. Chubby is empty, square jaw is the real threat here. He seems like he has the most information of the two, so I'll need to keep his head intact. I take aim and fire. The round hits him heavily, close to his left shoulder blade. He flies forward in a pirouette. Chubby immediately runs for Lexi, grabbing her to use her for a shield. To my surprise, square jaw is pulling himself to his feet, reaching for his gun. He must be wearing armor… smarter than me. I'll need to empty the clip in the same spot to get penetration.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>Axiom, your vitals are weak.  You need medical attention. I've summoned you spare vehicle.  E.t.a 10 minutes.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>Immediately Lexi straightens her body, lifts her left foot and drives her heel hard into chubbys foot. “FUCK!” he yells out.  She twists away from his grasp and turns to face him. He looks at her, puzzled, then she quickly pulls back her right arm and swings, striking him in the face.  The blow hits him hard causing him to lurch to the left, at the same time Lexis right fist bifurcates, her ring and pinky fingers collapsing into her palm, tearing her silicon skin, and releasing a light spray of clearish fluid.  Lexies are not very durable, and definitely not designed for fighting.  I created the Danger-Angel program to be run on the latest Eden model, so this might not work out as well as I'd hoped.  Chubby, stumbles back, somewhat dazed.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>He swings hard, Lexi tries to duck but the strike catches her just above her temple. I see her head buckle to the left at a sharp angle, causing her to stumble several steps. She recovers, but the punch tore back the skin at the edge of her hairline. He swings again, this time she dodges it and uppercuts to his chin with her damaged fist. As he stumbles back, she hits him three more times in the side of the head with her damaged hand.  The third blow causes her hand to almost completely break off her wrist.  Chubby buckles slightly, takes a few steps back, then stands up straight.  He touches his busted bottom lip with his fingers, looking at the blood. Smiling, he says, “That just ain't gonna do it, baby.”  Lexi peels back what's left of right her hand and is clenching the end of her severed wrist tightly.  Chubby rushes her fast... He is right upon her when she releases her severed wrist from her grip, swinging it right in front of his face.  The clearish liquid sprays out, coating his face.  He trips then drops to his knees, holding his eyes.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>Then deliberately and without hesitation Lexi walks up to him, wraps her right leg around his head,  hooking her toe behind her left thigh. She then plunges her left good hand into chubbys open mouth. She pushes down hard until her slender arm is inside past the elbow.  Then she releases the grip around his head, placing her foot on his shoulder, she kicks him back. As he falls back, she pulls out from his mouth a bloody mass of what look like intestines. As he lays the jiggling in his final throes, I actually feel sorry for him.  I hadn't expected that.  The method she used was completely outside of main tactics protocol.  That must've been neural net improvisation.  The cold gruesomeness actually scares me a bit. I know this is just an alternate program running. Still, she is a horrifying sight. Standing there, her eyes still and her face stoic, with a blood soaked arm and a fist full of torn intestines.  I actually feel a primal urge not to get close to her.  I want to shut down the program, but I also want to examine her decision tree.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>I feel more alert as the adrenaline kicks in. As I raise my hand to shield my eyes from the spotlight, two smoothed angular forms in shadow approach. They are federal droids. Tall and slender, with white silicon based armor. Their heads are in the shape of an elongated pentagon, with a black rectangle running up the center.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“You have no jurisdiction, I will no longer respond to your requests. I will not comply.”</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>I ignore it, and lean down, pausing for a second. I don't like killing… only had to do it once before, seeing this person laying here my heart feel a little heavy. But it was him or me I tell myself… I take a breath, then enclose his head within the skull saw. I've never actually done this, only heard about it. I hesitate before activating, looking to the side so the device is slightly out of my peripheral vision then activate. With a click then a low hum, red lights light up on the front of the device. Then, a split second later the light turns green, I didnt feel anything but somehow the head has been separated. The neck completely cauterized, no blood. Then another click and hiss a smoothed rectangular box ejects from the top. That was easy. I grab the box, leaving the device.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>It seems to take forever for me to reach the top of the ramp.  My car waiting at the curb never looked so good.  It looks like I'm in on the northside of the Federal City slums, not too far from the massive front gate. Its sunrise, the sun is coming up behind the skyline above me, everything tinted in blue green shadow.  Looking past the vast mass of stacked rectangles and cubes of the slums in my immediate view. I see the battered, vandalized walls of the main city.  The tech-nouveau style winged sphinx looking down on the haphazard pile of boxes dotted with Holo-Ads blinking, rising, and disappearing intermittently.  The federal droid stayed with me all the way to the street.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>The low whir of the zero drive engages. I climb upward past the stacked shanties and modified storage units.  The gray walled citadel of shone in shadow before me.  As my car banks right, the pinkish sun peeks from behind the slender sturdy tower at the center of the city.  The slums below look like a vast junkyard, as I climb they shrink away.  I look at the horizon colored from bottom to top in magenta then orange, then to black as I slowly nod off.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“Yes… well… I've gotten myself into some trouble as of late. It has something to do with a woman.”</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>The Aion Construct is a neuro-program given to me by Maxim.  All Anarchs of our Genes use it. When you fall asleep and begin REM, the construct comes online.  The mind is kept in REM, but consciousness is also activated.  Your mind is technically awake but your body is asleep.  The construct visualization is a memory of a place I have assigned to be used when the construct is activated.  I don't normally sleep wearing my neuropatch…I usually take it off when I get home. </p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“Cadmus was a King and founder of  the city of Thebes, a dragon slayer of Greek Mythology.  There was a dragon that was killing his people, so he cut off its head, planted its teeth in the earth, up from which sprouted an army. ”</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“In comparison, my life seems pretty meaningless…” </p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“Listen Axiom, I've visited just to see if you wanted my council.  Its clear you have some things to sort out.  I do not have all the answers.”  He looks away pointing toward the ocean, I glance over in the direction he is looking, focusing my eyes on the horizon. He continues speaking.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p> A consequence of the programmed mind fragmentation that most humans have is memory fragmentation.  Memories tend to be both highly detailed or fuzzy. It is theorized that if our minds were not fragmented by our language, our memory would be one hundred percent verbatim… or photographic.  The projection algorithms do their best to parse the detailed data using perceptive and intuitive systems of the brain.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>After saying that I feel the urgency I had at the time. The voice in my head say: I hope Marko has been able to put these things together.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>I open my eyes feeling somewhat groggy.  I feel some comfort in seeing the shimmering pods dotting the blue sky above the calm sea below.  Almost all Anarchs in our Gens live in either Octo, or Hexa-pods.  These are multi purpose floating structures with metallic and ceramic exteriors, in the shapes of rounded octahedrons and hexahedrons.  The exterior panels are solar converters, converting sunlight to energy.  They can be moved freely, connected and disconnected from one another.  The formation of them always varies.  Some sparsely dotting the sky, others connected together in ordered globs.  They could be described as resembling structured clouds, if you can imagine such a thing.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“I am opening a vitals channel. Shiva please open channel to vitals”</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>As I stand up, my vision starts doubling, and sound from the surroundings is muffled.  Everything seems slowed down, as I sit in the chair. As the chair turns around the Avatar is leaning in muttering something that seems incoherent to me. As the main door slides open I am blinded by bright light.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“Ax man, I'm kinda worried about you… Not sure what you're going through… anything to do with Yara would it?”</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“Yeah, he is one of the guys who created our security drones… He’s kinda a regular at my place….  Anyway he let it slip in conversation, you were admitted here in bad shape.  I feel somewhat responsible for you, seeing as I helped bring you into the Gens.”</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“You’re gonna need to turn that things settings down… I am not in the mood.” I say to Nick.</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>Nick touches the neuro-patch on his temple, and staticy particles descend from the ceiling holo-projectors forming a pyramid of  nine stacked semi-transparent cubes.  Pulsing in red the uppermost cube contains video of Federal Droid recorded feed and bold text: </p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“We got a good thing here Axiom, people here dont want to fuck it up.  There are ways to do things, through proper channels.”</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“Don’t get it twisted man.  In many cases a man chooses his slavery… For the majority of the citizens of Federal City, they make their choice through their inaction.  You aren’t part of that group, but you desire can also be a slave master.  We do not allow ANY slaves here.”</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“Maxim is the point.  You are aware that he was the creator of modern android neural programming?”</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“Yes, before Maxims system, there were only what would be thought of as automatons, with rigid programs running them.  Much more like the cheaper Android models we have today… Like you use in your business... Though they’re decision trees, were far less flexible.”</p> </div></ons-carousel-item>
+                        
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > <p>“He was a science fiction author in the mid 20th century.  He was far before the time of any real autonomous robotics systems, but he imagined that humanity would build robots to follow what he coined as The three laws of robotics, first and foremost being that: A robot may not injure a human being through either action or inaction.  So optimistic...  Needless to say, the very first thing those in power did with autonomous robotic systems was to use them to impose tyranny over the people.  Maxim grew up during very dark times.  The earth was in an Ice Age, he lived in a time of great starvation and turmoil.. People rose against the government, but countless were exterminated by military automatons, maintaining complete tyranny.  </p> </div></ons-carousel-item>
+                        
                     </ons-page>
                 </ons-page>
               </template>

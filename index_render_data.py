@@ -4,10 +4,9 @@ DATA = {
     "splitter_carousel":{
 
       "css": """ 
-    .item-label {
+    .page {
       display: table-cell;
       vertical-align: middle;
-      color: white;
       font-size: calc(14px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
       line-height: calc(1.3em + (1.5 - 1.2) * ((100vw - 300px)/(1600 - 300)));
       padding-right: 5vw;

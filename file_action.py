@@ -1,6 +1,7 @@
 import os
 import webbrowser
 import jinja2
+import html_parser
 
 import index_render_data
 
@@ -8,6 +9,7 @@ SCRIPT_PATH = os.path.realpath(__file__)
 FILE_NAME = os.path.basename(SCRIPT_PATH)
 PATH = SCRIPT_PATH.replace(FILE_NAME, "")
 
+TITLE = None
 CSS = None
 PAGE_DIRECTION = None
 TEMPLATE_DIR = None
@@ -15,6 +17,7 @@ THEME = "css/onsen-css-components.css"
 TEMPLATE_FILE = "index.html.j2"
 TEMPLATE_RENDER_DATA = "index_render_data.py"
 PAGE = "index.html"
+CONTENT = None
 
 def UpdateCss():
     print("Update Css")
@@ -30,27 +33,36 @@ def open_test_page():
         template_file = os.path.join(template_path, TEMPLATE_FILE)
         html_file = os.path.join(template_path, PAGE)
         
-        print(template_file)
-        print(index_render_data.DATA[TEMPLATE_DIR])
+        # print(template_file)
+        # print(index_render_data.DATA[TEMPLATE_DIR])
         template_data = index_render_data.DATA[TEMPLATE_DIR]
+
+        if TITLE != None:
+            template_data.update({"title": TITLE})
+
+        if CSS != None:
+            template_data.update({"css": CSS})
 
         if PAGE_DIRECTION != None:
             template_data.update({"page_direction": PAGE_DIRECTION})
 
-        print(THEME)
-
-        if THEME == "Dark":
+        if THEME == "Dark Theme":
             template_data.update({"css_theme": "css/dark-onsen-css-components.css"})
 
-        elif THEME == "Light":
+        elif THEME == "Light Theme":
             template_data.update({"css_theme": "css/onsen-css-components.css"})
 
-        elif THEME == "Old":
+        elif THEME == "Gray Theme":
             template_data.update({"css_theme": "css/old-onsen-css-components.css"})
+
+        if CONTENT != None:
+            parser = html_parser.DocHTMLParser()
+            parser.feed(CONTENT)
+            template_data.update({"content_list": parser.get_content_html_list()})
 
 
         render_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(template_path))
-        output_text = render_environment.get_template(TEMPLATE_FILE).render(index_render_data.DATA[TEMPLATE_DIR])
+        output_text = render_environment.get_template(TEMPLATE_FILE).render(template_data)
 
         with open(html_file, "w") as result_file:
             result_file.write(output_text)

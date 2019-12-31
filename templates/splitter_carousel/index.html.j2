@@ -17,6 +17,27 @@
         menu.open();
         };
 
+        var prev = function() {
+          var carousel = document.getElementById('AppCarousel');
+          carousel.prev();
+        };
+
+        var next = function() {
+          var carousel = document.getElementById('AppCarousel');
+          carousel.next();
+        };
+
+        var setPageIndex = function(index) {
+          var carousel = document.getElementById('AppCarousel');
+          carousel.setPageIndex(index)
+        };
+
+        ons.ready(function() {
+          var carousel = document.addEventListener('postchange', function(event) {
+            console.log('Changed to ' + event.activeIndex)
+          });
+        });
+
         window.fn.load = function(page) {
         var content = document.getElementById('content');
         var menu = document.getElementById('menu');
@@ -45,6 +66,15 @@
                       <ons-list-item onclick="fn.load('about.html')" tappable>
                         About
                       </ons-list-item>
+                      <ons-list-item expandable>
+                        Contents
+                        <div class="expandable-content">
+                          <ons-list>
+                            <ons-list-item tappable>1</ons-list-item>
+                            <ons-list-item tappable>2</ons-list-item>
+                          </ons-list>
+                        </div>
+                      </ons-list-item>
                     </ons-list>
                   </ons-page>
                 </ons-splitter-side>
@@ -60,25 +90,14 @@
                       </ons-toolbar-button>
                     </div>
                     <div class="center">
-                      Main
+                      {{ title }}
                     </div>
                   </ons-toolbar>
                   <ons-page>
-                        <ons-carousel id="myCarousel" initial-index="0" swipeable overscrollable auto-scroll auto-refresh fullscreen auto-scroll-ratio="0.2" direction={{ page_direction }}>
-                        <ons-carousel-item style="background-color: gray; overflow-y: scroll; height:90vh;">
-                            <div class="item-label" >
-                            </div>
-                        </ons-carousel-item>
-                        <ons-carousel-item style="background-color: #085078;">
-                            <div class="item-label">BLUE</div>
-                        </ons-carousel-item>
-                        <ons-carousel-item style="background-color: #373B44;">
-                            <div class="item-label">DARK</div>
-                        </ons-carousel-item>
-                        <ons-carousel-item style="background-color: #D38312;">
-                            <div class="item-label">ORANGE</div>
-                        </ons-carousel-item>
-                        </ons-carousel>
+                        <ons-carousel id="AppCarousel" initial-index="0" swipeable overscrollable auto-scroll auto-refresh fullscreen auto-scroll-ratio="0.2" direction={{ page_direction }}>
+                        {% for content in content_list %}
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > {{ content }} </div></ons-carousel-item>
+                        {% endfor %}
                     </ons-page>
                 </ons-page>
               </template>

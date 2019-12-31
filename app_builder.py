@@ -21,8 +21,7 @@ def docx_to_html(docx):
         result = mammoth.convert_to_html(docx_file)
         html = result.value # The generated HTML
         messages = result.messages # Any messages, such as warnings during conversion
-        # parser = html_parser.AppHTMLParser()
-        # parser.feed(html)
+        
     return result
 
 
