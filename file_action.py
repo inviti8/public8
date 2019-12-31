@@ -61,7 +61,6 @@ def open_test_page():
             parser.reset_current_char_count()
             parser.feed(CONTENT)
             content = parser.get_content_html_list()
-            print(content)
             template_data.update({"content_list": content})
 
 
