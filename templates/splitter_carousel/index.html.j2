@@ -18,13 +18,14 @@
         };
 
         window.fn.chapterOnClick = function(el) {
-            console.log(el.id)
+
             var carousel = document.getElementById('AppCarousel');
+            var countFab = document.getElementById('pageCountFab');
             var split = el.id.split("_");
             var index = parseInt(split[1]);
-            console.log(index);
-            console.log(carousel);
+
             carousel.setActiveIndex(index);
+            countFab.innerHTML = '<p style="text-align: center; font-size: 1.7vh;"> ' + index + '</p>';
             
         }
 
@@ -45,7 +46,9 @@
 
         ons.ready(function() {
           var carousel = document.addEventListener('postchange', function(event) {
+            var countFab = document.getElementById('pageCountFab');
             console.log('Changed to ' + event.activeIndex)
+            countFab.innerHTML = '<p style="text-align: center; font-size: 1.7vh;"> ' + event.activeIndex + '</p>';
           });
         });
 
@@ -104,6 +107,9 @@
                     </div>
                     <div class="center">
                       {{ title }}
+                    </div>
+                    <div class="right">
+                      <ons-fab id="pageCountFab" style="width: 5vw; height: 5vw;"></ons-fab>
                     </div>
                   </ons-toolbar>
                   <ons-page>
