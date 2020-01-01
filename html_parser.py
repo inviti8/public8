@@ -7,12 +7,17 @@ HTML_PARSE_OBJECT = {}
 class DocHTMLParser(HTMLParser):
     CHAR_PER_PAGE = 4500
 
+    previous_tag = None
     current_tag = None
     current_char_count = 0
     current_page_count = 0
     current_page_html = ""
 
+    chapter_list = []
     content_html_list = []
+
+    def get_chapter_html_list(self):
+        return self.chapter_list
 
     def get_content_html_list(self):
         return self.content_html_list
@@ -23,8 +28,15 @@ class DocHTMLParser(HTMLParser):
         self.current_page_html = ""
 
     def handle_starttag(self, tag, attrs):
+
+        if tag == "h1":
+            self.reset_current_char_count()
+
+        self.previous_tag = self.current_tag
         self.current_tag = tag
         self.current_page_html = self.current_page_html + "<" + tag
+
+        print(self.current_tag)
         
         for attr in attrs:
             self.current_page_html = self.current_page_html + " " + attr[0] + "="
@@ -44,11 +56,21 @@ class DocHTMLParser(HTMLParser):
 
     def handle_data(self, data):
         current_count = self.current_char_count + len(data)
+        print("from data call: " + self.current_tag)
 
-        data = html.unescape(str(data))
+        #Strip out quotes for now, until I can get parser to handle them properly.
+        data = str(data).encode('ascii','ignore').decode()
+
+        if self.previous_tag == "h1" and self.current_tag == "a":
+            self.chapter_list.append(data)
+
         
         if self.current_tag == "p":
             self.current_char_count = current_count + len(data)
+
+        if self.current_tag == "h1":
+            print("adding " + str(data) + " to chapter list.")
+            self.chapter_list.append(data)
 
         if self.current_tag == "img":
             self.current_page_html = self.current_page_html + data + ">"

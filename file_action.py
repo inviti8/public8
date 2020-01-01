@@ -61,7 +61,9 @@ def open_test_page():
             parser.reset_current_char_count()
             parser.feed(CONTENT)
             content = parser.get_content_html_list()
+            chapters = parser.get_chapter_html_list()
             template_data.update({"content_list": content})
+            template_data.update({"chapter_list": chapters})
 
 
         render_environment = jinja2.Environment(loader=jinja2.FileSystemLoader(template_path))

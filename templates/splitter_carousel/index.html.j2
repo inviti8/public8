@@ -71,8 +71,9 @@
                         Contents
                         <div class="expandable-content">
                           <ons-list>
-                            <ons-list-item tappable>1</ons-list-item>
-                            <ons-list-item tappable>2</ons-list-item>
+                            {% for chapter in chapter_list %}
+                              <ons-list-item tappable> {{ chapter }}</ons-list-item>
+                            {% endfor %}
                           </ons-list>
                         </div>
                       </ons-list-item>
