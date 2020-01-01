@@ -10,6 +10,7 @@
   <script src="js/onsenui.js"></script>
 
   <script>
+        ACTIVE_IMG = null;
         window.fn = {};
 
         window.fn.open = function() {
@@ -47,10 +48,44 @@
         ons.ready(function() {
           var carousel = document.addEventListener('postchange', function(event) {
             var countFab = document.getElementById('pageCountFab');
+            var activeImg = document.getElementById('img_' + event.activeIndex);
+            ACTIVE_IMG = activeImg;
+            console.log(activeImg)
             console.log('Changed to ' + event.activeIndex)
             countFab.innerHTML = '<p style="text-align: center; font-size: 1.7vh;"> ' + event.activeIndex + '</p>';
           });
         });
+
+        window.fn.imgOnClick = function(el) {
+
+          console.log(el.innerHTML)
+
+        var showImgDialog = function() {
+        var dialog = document.getElementById('img-dialog');
+
+          if (dialog) {
+              dialog.show();
+                var container = document.getElementById('img-dialog-container');
+                container.innerHTML = '<img src= ' + ACTIVE_IMG.src + ' style= " display: block; margin-left: auto; margin-right: auto; width: 90%;"></img>';
+            } else {
+            ons.createElement('img-dialog.html', { append: true })
+              .then(function(dialog) {
+                dialog.show();
+                var container = document.getElementById('img-dialog-container');
+                container.innerHTML = '<img src= ' + ACTIVE_IMG.src + ' style= " display: block; margin-left: auto; margin-right: auto; width: 90%;"></img>';
+              });
+            }
+
+            var container = document.getElementById('img-dialog-container');
+          }
+          showImgDialog();
+        }
+
+        var hideDialog = function(id) {
+            document
+              .getElementById(id)
+              .hide();
+        };
 
         window.fn.load = function(page) {
         var content = document.getElementById('content');
@@ -149,6 +184,16 @@
                     </div>
                   </ons-toolbar>
                 </ons-page>
+              </template>
+
+              <template id="img-dialog.html">
+                <ons-dialog id="img-dialog">
+                  <div style="position:absolute;">
+                    <ons-button onclick="hideDialog('img-dialog')">Close</ons-button>
+                  </div>
+                  <div id="img-dialog-container" style="align-content: center;  padding: 10px; width:90vw; height:90vh;">
+                  </div>
+                </ons-dialog>
               </template>
     
 

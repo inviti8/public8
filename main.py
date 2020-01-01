@@ -137,7 +137,6 @@ def ProcessContentFile(file_path):
         content = app_builder.docx_to_html(file_path)
         tmp_file = os.path.join(PATH, "tmp")
         file_action.CONTENT = content.value
-        #os.system(content.value  + " > " + tmp_file)
         print(content.messages)
         # print(content.value)
 

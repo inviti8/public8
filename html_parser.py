@@ -38,6 +38,8 @@ class DocHTMLParser(HTMLParser):
         self.current_page_html = self.current_page_html + "<" + tag
         
         for attr in attrs:
+            if tag == "img":
+                self.current_page_html = self.current_page_html + ' id= "img_' + str(self.current_page_count) + '" ' + ' onclick="fn.imgOnClick(self)" '
             self.current_page_html = self.current_page_html + " " + attr[0] + "="
             self.current_page_html = self.current_page_html + " '" + attr[1] + "'"
 
