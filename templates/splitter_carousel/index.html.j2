@@ -17,6 +17,17 @@
         menu.open();
         };
 
+        window.fn.chapterOnClick = function(el) {
+            console.log(el.id)
+            var carousel = document.getElementById('AppCarousel');
+            var split = el.id.split("_");
+            var index = parseInt(split[1]);
+            console.log(index);
+            console.log(carousel);
+            carousel.setActiveIndex(index);
+            
+        }
+
         var prev = function() {
           var carousel = document.getElementById('AppCarousel');
           carousel.prev();
@@ -29,7 +40,7 @@
 
         var setPageIndex = function(index) {
           var carousel = document.getElementById('AppCarousel');
-          carousel.setPageIndex(index)
+          carousel.setPageIndex(index);
         };
 
         ons.ready(function() {
@@ -52,7 +63,6 @@
 
 </head>
 
-
 <body>
         <ons-splitter>
                 <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
@@ -72,7 +82,8 @@
                         <div class="expandable-content">
                           <ons-list>
                             {% for chapter in chapter_list %}
-                              <ons-list-item tappable> {{ chapter }}</ons-list-item>
+
+                              <ons-list-item tappable id= "chapter_{{ chapter_index_list[loop.index0] }}" onclick="fn.chapterOnClick(this)"> {{ chapter }}</ons-list-item>
                             {% endfor %}
                           </ons-list>
                         </div>

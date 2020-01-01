@@ -14,7 +14,11 @@ class DocHTMLParser(HTMLParser):
     current_page_html = ""
 
     chapter_list = []
+    chapter_index_list = []
     content_html_list = []
+
+    def get_chapter_index_html_list(self):
+        return self.chapter_index_list
 
     def get_chapter_html_list(self):
         return self.chapter_list
@@ -23,20 +27,22 @@ class DocHTMLParser(HTMLParser):
         return self.content_html_list
 
     def reset_current_char_count(self):
+        print("resetting count char count is " + str(self.current_char_count))
         self.current_char_count = 0
         self.current_page_count = self.current_page_count + 1
         self.current_page_html = ""
 
     def handle_starttag(self, tag, attrs):
 
-        if tag == "h1":
-            self.reset_current_char_count()
+        # if tag == "h1":
+        #     print("self.current_page_count ")
+        #     print(self.current_page_count)
+        #     self.chapter_index_list.append(self.current_page_count)
+        #     self.reset_current_char_count()
 
         self.previous_tag = self.current_tag
         self.current_tag = tag
         self.current_page_html = self.current_page_html + "<" + tag
-
-        print(self.current_tag)
         
         for attr in attrs:
             self.current_page_html = self.current_page_html + " " + attr[0] + "="
@@ -49,6 +55,12 @@ class DocHTMLParser(HTMLParser):
 
         self.current_page_html = self.current_page_html + "</" + tag + ">"
 
+        if tag == "h1":
+            print("self.current_page_count ")
+            print(self.current_page_count)
+            self.chapter_index_list.append(self.current_page_count)
+
+
         if self.current_char_count >= self.CHAR_PER_PAGE:
 
             self.content_html_list.insert(page_count, self.current_page_html)
@@ -56,7 +68,6 @@ class DocHTMLParser(HTMLParser):
 
     def handle_data(self, data):
         current_count = self.current_char_count + len(data)
-        print("from data call: " + self.current_tag)
 
         #Strip out quotes for now, until I can get parser to handle them properly.
         data = str(data).encode('ascii','ignore').decode()
@@ -69,7 +80,6 @@ class DocHTMLParser(HTMLParser):
             self.current_char_count = current_count + len(data)
 
         if self.current_tag == "h1":
-            print("adding " + str(data) + " to chapter list.")
             self.chapter_list.append(data)
 
         if self.current_tag == "img":
