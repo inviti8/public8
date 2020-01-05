@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Carousel</title>
   <link rel="stylesheet" href= "css/onsenui.css">
-  <link rel="stylesheet" href= {{ css_theme }} >
+  <link rel="stylesheet" type="text/css" href="css/magnifier.css">
+  <link rel="stylesheet" href= "{{ css_theme }}" >
 
   <script src="js/onsenui.js"></script>
 
@@ -65,14 +66,28 @@
 
           if (dialog) {
               dialog.show();
+              m.attach({
+                  thumb: '#thumb',
+                  large: ACTIVE_IMG.src,
+                  mode: 'inside',
+                  zoom: 3,
+                  zoomable: true
+              });
                 var container = document.getElementById('img-dialog-container');
-                container.innerHTML = '<img src= ' + ACTIVE_IMG.src + ' style= " display: block; margin-left: auto; margin-right: auto; width: 90%;"></img>';
+                container.innerHTML = '<img id="thumb" data-mode="inside" data-zoomable="true" src= ' + ACTIVE_IMG.src + ' style= " display: block;  margin-top: 5vh; margin-left: auto; margin-right: auto; width: 90%;"></img>';
             } else {
             ons.createElement('img-dialog.html', { append: true })
               .then(function(dialog) {
                 dialog.show();
+                m.attach({
+                  thumb: '#thumb',
+                  large: ACTIVE_IMG.src,
+                  mode: 'inside',
+                  zoom: 3,
+                  zoomable: true
+              });
                 var container = document.getElementById('img-dialog-container');
-                container.innerHTML = '<img src= ' + ACTIVE_IMG.src + ' style= " display: block; margin-left: auto; margin-right: auto; width: 90%;"></img>';
+                container.innerHTML = '<img id="thumb" data-mode="inside" data-zoomable="true" src= ' + ACTIVE_IMG.src + ' style= " display: block;  margin-top: 5vh; margin-left: auto; margin-right: auto; width: 90%;"></img>';
               });
             }
 
@@ -195,7 +210,11 @@
                   </div>
                 </ons-dialog>
               </template>
-    
-
+<script type="text/javascript" src="js/Event.js"></script>   
+<script type="text/javascript" src="js/Magnifier.js"></script>
+<script type="text/javascript">
+    var evt = new Event(),
+    m = new Magnifier(evt);
+</script>
 </body>
 </html>
