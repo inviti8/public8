@@ -59,35 +59,32 @@
 
         window.fn.imgOnClick = function(el) {
 
-          console.log(el.innerHTML)
+        var setImageContent = function()
+        {
+            var container = document.getElementById('img-dialog-container');
+            container.innerHTML = '<img id="thumb" class="magnifier-large hidden" data-mode="inside" data-zoomable="true" src= ' + ACTIVE_IMG.src + ' style= " display: block;  margin-top: 5vh; margin-left: auto; margin-right: auto; width: 90%;"></img>';
+            var evt = new Event(),
+            m = new Magnifier(evt);
+            m.attach({
+              thumb: '#thumb',
+              large: ACTIVE_IMG.src,
+              mode: 'inside',
+              zoom: 3,
+              zoomable: true
+            });
+        }
 
         var showImgDialog = function() {
         var dialog = document.getElementById('img-dialog');
 
           if (dialog) {
               dialog.show();
-              m.attach({
-                  thumb: '#thumb',
-                  large: ACTIVE_IMG.src,
-                  mode: 'inside',
-                  zoom: 3,
-                  zoomable: true
-              });
-                var container = document.getElementById('img-dialog-container');
-                container.innerHTML = '<img id="thumb" data-mode="inside" data-zoomable="true" src= ' + ACTIVE_IMG.src + ' style= " display: block;  margin-top: 5vh; margin-left: auto; margin-right: auto; width: 90%;"></img>';
+              setImageContent();
             } else {
             ons.createElement('img-dialog.html', { append: true })
               .then(function(dialog) {
                 dialog.show();
-                m.attach({
-                  thumb: '#thumb',
-                  large: ACTIVE_IMG.src,
-                  mode: 'inside',
-                  zoom: 3,
-                  zoomable: true
-              });
-                var container = document.getElementById('img-dialog-container');
-                container.innerHTML = '<img id="thumb" data-mode="inside" data-zoomable="true" src= ' + ACTIVE_IMG.src + ' style= " display: block;  margin-top: 5vh; margin-left: auto; margin-right: auto; width: 90%;"></img>';
+                setImageContent();
               });
             }
 
@@ -212,9 +209,5 @@
               </template>
 <script type="text/javascript" src="js/Event.js"></script>   
 <script type="text/javascript" src="js/Magnifier.js"></script>
-<script type="text/javascript">
-    var evt = new Event(),
-    m = new Magnifier(evt);
-</script>
 </body>
 </html>
