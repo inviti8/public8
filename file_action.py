@@ -18,6 +18,7 @@ TEMPLATE_FILE = "index.html.j2"
 TEMPLATE_RENDER_DATA = "index_render_data.py"
 PAGE = "index.html"
 CONTENT = None
+TABLE_ALIGN = "LEFT"
 
 def UpdateCss():
     print("Update Css")
@@ -57,6 +58,7 @@ def open_test_page():
 
         if CONTENT != None:
             parser = html_parser.DocHTMLParser()
+            parser.TABLE_ALIGNMENT = TABLE_ALIGN
             parser.reset()
             parser.feed(CONTENT)
             content = parser.get_content_html_list()

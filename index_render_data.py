@@ -32,7 +32,6 @@ DATA = {
       width: calc(300px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
     }
     table{
-      float:left;
       width: calc(350px + (26 - 14) * ((100vw - 350px) / (1600 - 350)));
       margin:10 10 10 10;
     }

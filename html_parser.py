@@ -6,6 +6,7 @@ HTML_PARSE_OBJECT = {}
 
 class DocHTMLParser(HTMLParser):
     CHAR_PER_PAGE = 5000
+    TABLE_ALIGNMENT = "left"
 
     previous_tag = None
     current_tag = None
@@ -18,6 +19,7 @@ class DocHTMLParser(HTMLParser):
     chapter_list = []
     chapter_index_list = []
     content_html_list = []
+    table_align = None
 
     def get_chapter_index_html_list(self):
         return self.chapter_index_list
@@ -37,36 +39,54 @@ class DocHTMLParser(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
 
-        page_count = self.current_page_count
-
-        if tag == "p" and self.current_char_count >= (self.CHAR_PER_PAGE - self.char_count_adjustment):
-
-            self.content_html_list.insert(page_count, self.current_page_html)
-            self.reset_current_char_count()
-
         self.previous_tag = self.current_tag
         self.current_tag = tag
         self.current_page_html = self.current_page_html + "<" + tag
+
+        if tag == "table":
+
+            if self.table_align == None:
+                if self.TABLE_ALIGNMENT == "alternate":
+                    self.table_align = "left"
+                else:
+                    self.table_align = self.TABLE_ALIGNMENT
+
+            self.current_page_html = self.current_page_html + ' style= "float:' + self.table_align +';"'
+
+            if self.TABLE_ALIGNMENT == "alternate":
+                
+                if self.table_align == "left":
+                    self.table_align = "right"
+                    
+                elif self.table_align == "right":
+                    self.table_align = "left"
+
         
         for attr in attrs:
             if tag == "img":
-                self.char_count_adjustment = self.char_count_adjustment + 300
                 self.page_image_count = self.page_image_count  + 1
-                self.current_page_html = self.current_page_html + ' class="img" id= "img_' + str(self.current_page_count) + '_' + str(self.page_image_count) + '" ' + ' onclick= fn.imgOnClick(self) '
-            elif tag == "h1":
-                self.char_count_adjustment = self.char_count_adjustment + 200
+                self.current_page_html = self.current_page_html + ' class="img" id= "img_' + str(self.current_page_count) + '_' + str(self.page_image_count) + '" '
 
+            
             self.current_page_html = self.current_page_html + " " + attr[0] + "="
             self.current_page_html = self.current_page_html + " '" + attr[1] + "'"
 
         self.current_page_html = self.current_page_html + ">"
 
     def handle_endtag(self, tag):
-
+        page_count = self.current_page_count
         self.current_page_html = self.current_page_html + "</" + tag + ">"
 
         if tag == "h1":
             self.chapter_index_list.append(self.current_page_count)
+            self.char_count_adjustment = self.char_count_adjustment + 500
+        elif tag == "img":
+            self.char_count_adjustment = self.char_count_adjustment + 1500
+
+        elif tag == "p" and self.current_char_count >= (self.CHAR_PER_PAGE - self.char_count_adjustment):
+
+            self.content_html_list.insert(page_count, self.current_page_html)
+            self.reset_current_char_count()
 
 
     def handle_data(self, data):

@@ -315,6 +315,11 @@ class AppSpinner(Spinner):
         elif self.name is "PAGE_DIRECTION_SPINNER":
             file_action.PAGE_DIRECTION = self.text
 
+        elif self.name is "IMG_LAYOUT_SPINNER":
+            textSplit = self.text.split(":")
+            alignment = textSplit[1]
+            file_action.TABLE_ALIGN = alignment.lower()
+
     
 class TabbedPanelApp(App):
 
