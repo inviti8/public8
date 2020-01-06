@@ -54,20 +54,30 @@
             console.log(activeImg)
             console.log('Changed to ' + event.activeIndex)
             countFab.innerHTML = '<p style="text-align: center; font-size: 1.7vh;"> ' + event.activeIndex + '</p>';
+
+            var images = document.getElementsByClassName("img");
+
+            for (i = 0; i < images.length; i++) {
+              var img = images[i];
+              img.setAttribute('onclick','fn.imgOnClick(this)');
+            }
           });
         });
 
         window.fn.imgOnClick = function(el) {
 
+        console.log(el)
+
         var setImageContent = function()
         {
             var container = document.getElementById('img-dialog-container');
-            container.innerHTML = '<img id="thumb" class="magnifier-large hidden" data-mode="inside" data-zoomable="true" src= ' + ACTIVE_IMG.src + ' style= " display: block;  margin-top: 5vh; margin-left: auto; margin-right: auto; width: 90%;"></img>';
+            var img = document.getElementById(el.id);
+            container.innerHTML = '<img id="thumb" class="magnifier-large hidden" data-mode="inside" data-zoomable="true" src= ' + img.src + ' style= " display: block;  margin-top: 20vh; margin-left: auto; margin-right: auto; width: 90%;"></img>';
             var evt = new Event(),
             m = new Magnifier(evt);
             m.attach({
               thumb: '#thumb',
-              large: ACTIVE_IMG.src,
+              large: img.src,
               mode: 'inside',
               zoom: 3,
               zoomable: true
@@ -149,7 +159,7 @@
                   <ons-toolbar>
                     <div class="left">
                       <ons-toolbar-button onclick="fn.open()">
-                        <ons-icon icon="md-menu"></ons-icon>
+                        <ons-icon icon="book"></ons-icon>
                       </ons-toolbar-button>
                     </div>
                     <div class="center">
@@ -209,5 +219,6 @@
               </template>
 <script type="text/javascript" src="js/Event.js"></script>   
 <script type="text/javascript" src="js/Magnifier.js"></script>
+
 </body>
 </html>
