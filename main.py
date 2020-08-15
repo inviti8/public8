@@ -55,6 +55,9 @@ def FileChooser_LoadContent(button):
 
     container = BoxLayout(orientation='vertical')
     app.filechooser = FileChooserIconView(path=app.root.current_drive)
+
+    if app.content_type.lower() == "psd":
+        app.filechooser = FileChooserIconView(path=app.root.current_drive, dirselect=True)
     
     button = AppButton(text='SELECT', name="LOAD_CONTENT_POPUP_BUTTON", size_hint=(1, .2))
     button.selected = app.filechooser.selection
@@ -104,7 +107,7 @@ def FileChooser_Flow(button, next_chooser, next_chooser_text):
 
     return container
 
-def ValidateContentPath(path):
+def ValidateFileContentPath(path):
     app = App.get_running_app()
     result = None
     file = os.path.isfile(path)
@@ -139,6 +142,8 @@ def ProcessContentFile(file_path):
         file_action.CONTENT = content.value
         print(content.messages)
         # print(content.value)
+    elif app.content_type.lower() == "psd":
+        app_builder.psd_to_html(file_path)
 
 
 class TabLayout(TabbedPanel):
@@ -173,13 +178,18 @@ class AppButton(Button):
         if len(selection_list) > 0:
             app = App.get_running_app()
             path = selection_list[0]
-            validPath = ValidateContentPath(path)
 
-            if validPath is not None:
-                app.root.ids.content_path_text_input.text = validPath
-                ProcessContentFile(validPath)
-            else:
-                app.root.ids.content_path_text_input.text = "INVALID SELECTION!"
+            if app.content_type.lower() == "docx":
+                validPath = ValidateFileContentPath(path)
+
+                if validPath is not None:
+                    app.root.ids.content_path_text_input.text = validPath
+                    ProcessContentFile(validPath)
+                else:
+                    app.root.ids.content_path_text_input.text = "INVALID SELECTION!"
+
+            elif app.content_type.lower() == "psd":
+                app.root.ids.content_path_text_input.text = path
     
     def LOAD_WALLET_KEY_BUTTON_pressed(self, selection_list):
         '''
@@ -300,6 +310,7 @@ class AppSpinner(Spinner):
 
         elif self.name is "CONTENT_TYPE_SPINNER":
             app_builder.CONTENT_TYPE = self.text
+            file_action.CONTENT_TYPE = self.text
             app.content_type = self.text
         
         elif self.name is "THEME_SPINNER":

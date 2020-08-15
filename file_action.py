@@ -13,6 +13,7 @@ TITLE = None
 CSS = None
 PAGE_DIRECTION = None
 TEMPLATE_DIR = None
+CONTENT_TYPE = None
 THEME = "css/onsen-css-components.css"
 TEMPLATE_FILE = "index.html.j2"
 TEMPLATE_RENDER_DATA = "index_render_data.py"
@@ -27,6 +28,15 @@ def UpdateCss():
 
 def open_test_page():
     print("open test page")
+
+    if CONTENT_TYPE == "Docx":
+        create_text_content_and_open()
+    elif CONTENT_TYPE == "Psd":
+        create_psd_content_and_open()
+
+
+def create_text_content_and_open():
+    print("creating text content to test")
     if TEMPLATE_DIR is not None or TEMPLATE_DIR is not "None":
         new_tab = 2
         template_path = os.path.join(PATH, "templates")
@@ -34,8 +44,6 @@ def open_test_page():
         template_file = os.path.join(template_path, TEMPLATE_FILE)
         html_file = os.path.join(template_path, PAGE)
         
-        # print(template_file)
-        # print(index_render_data.DATA[TEMPLATE_DIR])
         template_data = index_render_data.DATA[TEMPLATE_DIR]
 
         if TITLE != None:
@@ -77,4 +85,7 @@ def open_test_page():
             result_file.close
 
         webbrowser.open(html_file, new_tab)
+
+def create_psd_content_and_open():
+    print(" creating psd content and opening")
         

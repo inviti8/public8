@@ -6,14 +6,15 @@ DATA = {
       "css": """ 
     .page {
       display: table-cell;
-      vertical-align: middle;
+      vertical-align: top;
       font-size: calc(14px + (26 - 14) * ((100vw - 300px) / (1600 - 300)));
       line-height: calc(1.3em + (1.5 - 1.2) * ((100vw - 300px)/(1600 - 300)));
       padding-top: 5vw;
+      padding-bottom: 10vw;
       padding-right: 5vw;
       padding-left: 5vw;
       overflow-y: auto;
-      height:95vh;
+      height:90vh;
     }
     h1{
 		text-align: center;
