@@ -190,6 +190,7 @@ class AppButton(Button):
 
             elif app.content_type.lower() == "psd":
                 app.root.ids.content_path_text_input.text = path
+                ProcessContentFile(path)
     
     def LOAD_WALLET_KEY_BUTTON_pressed(self, selection_list):
         '''

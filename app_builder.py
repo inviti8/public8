@@ -24,10 +24,7 @@ def docx_to_html(docx):
         
     return result
 
-def psd_to_html(psd):
-    directory = os.path.dirname(psd)
-    print(psd)
-    print(directory)
+def psd_to_html(directory):
     for file in os.listdir(directory):
      filename = os.fsdecode(file)
      if filename.endswith(".psd"): 
