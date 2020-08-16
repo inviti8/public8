@@ -118,9 +118,11 @@ def create_psd_content_and_open():
 
         if PSD_CONTENT != None:
             content = PSD_CONTENT['html']
+            chapters = PSD_CONTENT['chapter']
             chapter_indexes = PSD_CONTENT['index']
             inline_css = PSD_CONTENT['css']
             template_data.update({"content_list": content})
+            template_data.update({"chapter_list": chapters})
             template_data.update({"chapter_index_list": chapter_indexes})
             template_data.update({"inline_css_list": inline_css})
 

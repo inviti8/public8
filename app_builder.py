@@ -50,10 +50,13 @@ def psd_to_html(directory):
             htmlList.insert(index, html)
             cssList.insert(index, css)
             indexList.insert(index, index)
+            chapterList.insert(index, index)
+            index=index+1
 
     result['html'] = htmlList
     result['css'] = cssList
     result['index'] = indexList
+    result['chapter'] = chapterList
             
     return result
 
