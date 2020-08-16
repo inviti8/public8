@@ -139,11 +139,11 @@ def ProcessContentFile(file_path):
     if app.content_type.lower() == "docx":
         content = app_builder.docx_to_html(file_path)
         tmp_file = os.path.join(PATH, "tmp")
-        file_action.CONTENT = content.value
+        file_action.DOC_CONTENT = content.value
         print(content.messages)
         # print(content.value)
     elif app.content_type.lower() == "psd":
-        app_builder.psd_to_html(file_path)
+        file_action.PSD_CONTENT = app_builder.psd_to_html(file_path)
 
 
 class TabLayout(TabbedPanel):

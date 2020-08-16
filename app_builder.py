@@ -2,6 +2,7 @@ import os
 import file_action
 import mammoth
 import html_parser
+import psd_parser
 import re
 
 ARWEAVE_APP_TYPE = None
@@ -25,10 +26,36 @@ def docx_to_html(docx):
     return result
 
 def psd_to_html(directory):
-    for file in os.listdir(directory):
-     filename = os.fsdecode(file)
-     if filename.endswith(".psd"): 
-         print(os.path.join(directory, filename))
+    result = {}
+    htmlList = []
+    cssList = []
+    indexList = []
+    chapterList = []
+    index = 0
+
+    for file in sorted(os.listdir(directory)):
+        filename = os.fsdecode(file)
+        chapterSplit = filename.split('_')
+        chapterName = None
+
+        if len(chapterSplit) > 1:
+            chapterName = chapterSplit[0]
+
+        if filename.endswith(".psd"):
+            psdFile = os.path.join(directory, filename)
+            content = psd_parser.PSDHtmlAndCssParser(psdFile)
+            html = content[0]
+            css = content[1]
+            print(psdFile)
+            htmlList.insert(index, html)
+            cssList.insert(index, css)
+            indexList.insert(index, index)
+
+    result['html'] = htmlList
+    result['css'] = cssList
+    result['index'] = indexList
+            
+    return result
 
 
 def build_app(template):

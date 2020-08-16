@@ -119,6 +119,9 @@
 
   <style>
     {{ css }}
+    {% for inline_css in inline_css_list %}
+        {{ inline_css }}
+    {% endfor %}
   </style>
 
 </head>
