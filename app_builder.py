@@ -76,6 +76,8 @@ def video_to_html(directory):
     localVideoPath = os.path.join(localVideoPath, "videos")
     video_parser.TEMPLATE_PATH = os.path.join(SCRIPT_PATH, templatePath)
 
+    media_action.ClearFolder(localVideoPath)
+
     for f in sorted(os.listdir(directory)):
         filename = os.fsdecode(f)
         if filename.endswith(".mp4") or filename.endswith(".webm") or filename.endswith(".ogg"):

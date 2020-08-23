@@ -14,5 +14,6 @@ def CopyVideoFile(source, dest):
 
 def ClearFolder(folder):
     for files in os.listdir(folder):
-        os.remove(files)
+        filePath = os.path.join(folder, files)
+        os.remove(filePath)
 
