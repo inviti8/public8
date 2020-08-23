@@ -4,6 +4,10 @@ DATA = {
     "splitter_carousel":{
 
       "css": """ 
+    .video{
+      display: block;
+      margin: 0 auto;
+     }
     .page {
       display: table-cell;
       vertical-align: top;

@@ -9,12 +9,14 @@
 
 <AppButton>:
     color:  0, .7, .8, 1
+    radius: 10, 10, 10, 10
 
 <AppSpinner>:
     size: 30, 44
     size_hint: 1, 0.85
     color:  0, .7, .8, 1
     on_text: self.on_spinner_change()
+    size_hint: 0.5, 0.7
 
 <AppTextInput>:
     background_color: 0, .5, .65, 1
@@ -93,7 +95,6 @@
                         name: "IMG_LAYOUT_SPINNER"
                         text: "Image Align:Left"
                         values: "Image Align:Left", "Image Align:Right", "Image Align:Alternate"
-                        size_hint: 0.5, 0.7
 
 
                 BoxLayout:
@@ -125,7 +126,7 @@
                         id: content_type_spinner
                         name: "CONTENT_TYPE_SPINNER"
                         text: "Docx"
-                        values: "Docx", "Psd"
+                        values: "Docx", "Psd", "Video"
 
 
 
@@ -158,7 +159,6 @@
                         name: "THEME_SPINNER"
                         text: "Dark Theme"
                         values: "Dark Theme", "Light Theme", "Gray Theme"
-                        size_hint: 0.5, 0.7
 
                     AppButton:
                         id: theme_load_button

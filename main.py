@@ -56,7 +56,7 @@ def FileChooser_LoadContent(button):
     container = BoxLayout(orientation='vertical')
     app.filechooser = FileChooserIconView(path=app.root.current_drive)
 
-    if app.content_type.lower() == "psd":
+    if app.content_type.lower() == "psd" or app.content_type.lower() == "video":
         app.filechooser = FileChooserIconView(path=app.root.current_drive, dirselect=True)
     
     button = AppButton(text='SELECT', name="LOAD_CONTENT_POPUP_BUTTON", size_hint=(1, .2))
@@ -144,6 +144,8 @@ def ProcessContentFile(file_path):
         # print(content.value)
     elif app.content_type.lower() == "psd":
         file_action.PSD_CONTENT = app_builder.psd_to_html(file_path)
+    elif app.content_type.lower() == "video":
+        file_action.VIDEO_CONTENT = app_builder.video_to_html(file_path)
 
 
 class TabLayout(TabbedPanel):
@@ -188,7 +190,7 @@ class AppButton(Button):
                 else:
                     app.root.ids.content_path_text_input.text = "INVALID SELECTION!"
 
-            elif app.content_type.lower() == "psd":
+            elif app.content_type.lower() == "psd" or app.content_type.lower() == "video":
                 app.root.ids.content_path_text_input.text = path
                 ProcessContentFile(path)
     
@@ -313,6 +315,7 @@ class AppSpinner(Spinner):
             app_builder.CONTENT_TYPE = self.text
             file_action.CONTENT_TYPE = self.text
             app.content_type = self.text
+            print(self.text)
         
         elif self.name is "THEME_SPINNER":
             app_builder.THEME = self.text
@@ -320,6 +323,7 @@ class AppSpinner(Spinner):
 
         elif self.name is "TEMPLATE_SPINNER":
             file_action.TEMPLATE_DIR = self.text
+            app_builder.TEMPLATE_DIR = self.text
             if app.root != None:
                 if file_action.TEMPLATE_DIR != None and file_action.TEMPLATE_DIR != 'None':
                     app.root.ids.css_text_input.text = file_action.UpdateCss()

@@ -3,8 +3,13 @@ import file_action
 import mammoth
 import html_parser
 import psd_parser
+import video_parser
+import media_action
 import re
+import inspect
 
+SCRIPT_PATH = os.path.dirname(os.path.realpath(inspect.stack()[0][1]))
+TEMPLATE_DIR = None
 ARWEAVE_APP_TYPE = None
 ARWEAVE_APP_TITLE = None
 AUTHOR = None
@@ -33,8 +38,8 @@ def psd_to_html(directory):
     chapterList = []
     index = 0
 
-    for file in sorted(os.listdir(directory)):
-        filename = os.fsdecode(file)
+    for f in sorted(os.listdir(directory)):
+        filename = os.fsdecode(f)
         chapterSplit = filename.split('_')
         chapterName = None
 
@@ -46,7 +51,6 @@ def psd_to_html(directory):
             content = psd_parser.PSDHtmlAndCssParser(psdFile)
             html = content[0]
             css = content[1]
-            print(psdFile)
             htmlList.insert(index, html)
             cssList.insert(index, css)
             indexList.insert(index, index)
@@ -58,6 +62,39 @@ def psd_to_html(directory):
     result['index'] = indexList
     result['chapter'] = chapterList
             
+    return result
+
+def video_to_html(directory):
+    result = {}
+    pathList = []
+    indexList = []
+    chapterList = []
+    index = 0
+
+    templatePath = os.path.join("templates", TEMPLATE_DIR)
+    localVideoPath = os.path.join(SCRIPT_PATH, templatePath)
+    localVideoPath = os.path.join(localVideoPath, "videos")
+    print("localVideoPath")
+    print(localVideoPath)
+    # media_action.ClearFolder(localVideoPath )
+
+    for f in sorted(os.listdir(directory)):
+        filename = os.fsdecode(f)
+        if filename.endswith(".mp4") or filename.endswith(".webm") or filename.endswith(".ogg"):
+            srcPath = os.path.join(directory, filename)
+            destPath = os.path.join(localVideoPath, filename)
+
+            media_action.CopyVideoFile(srcPath, destPath)
+            pathList.insert(index, destPath)
+            chapterList.insert(index, index)
+            index = index+1
+            print(srcPath)
+            
+            result['html'] = video_parser.VideoTagList(pathList)
+            result['chapter'] = chapterList
+            result['index'] = indexList
+            indexList.insert(index, index)
+
     return result
 
 
