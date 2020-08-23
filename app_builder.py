@@ -74,7 +74,7 @@ def video_to_html(directory):
     templatePath = os.path.join("templates", TEMPLATE_DIR)
     localVideoPath = os.path.join(SCRIPT_PATH, templatePath)
     localVideoPath = os.path.join(localVideoPath, "videos")
-    video_parser.TEMPLATE_PATH = templatePath
+    video_parser.TEMPLATE_PATH = os.path.join(SCRIPT_PATH, templatePath)
 
     for f in sorted(os.listdir(directory)):
         filename = os.fsdecode(f)
@@ -84,7 +84,7 @@ def video_to_html(directory):
             appVideoPath = os.path.join("videos", filename)
 
             media_action.CopyVideoFile(srcPath, destPath)
-            pathList.insert(index, destPath)
+            pathList.insert(index, appVideoPath)
             chapterList.insert(index, index)
             index = index+1
             print(srcPath)
