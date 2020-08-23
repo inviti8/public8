@@ -1,5 +1,7 @@
-import html
+import os
 import subprocess
+
+TEMPLATE_PATH = None
 
 
 def ParseBodyContent(line, fullText):
@@ -11,10 +13,9 @@ def ParseBodyContent(line, fullText):
   elif ";FFMETADATA1" not in line and "major_brand=" not in line and "minor_version=" not in line and "compatible_brands=" not in line and "title=" not in line and "encoder=" not in line and "date=" not in line:
     result = fullText + line
   elif ";FFMETADATA1" in line or "major_brand=" in line or "minor_version=" in line or "compatible_brands=" in line or "title=" in line or "encoder=" in line or "date=" in line:
-    return None
+    return "$NONE$"
 
   return result
-
 
 
 def ParseFFMpegMetaData():
@@ -29,10 +30,10 @@ def ParseFFMpegMetaData():
       line = line.strip()
       if 'title=' in line:
         title = line.replace('title=', '')
-      elif 'comment=' in line or bodyParsing:
+      elif 'comment=' in line or bodyParsing == True:
         bodyParsing = True
         content = ParseBodyContent(line, content)
-        if content != None:
+        if "$NONE$" not in content:
           body += content
 
 
@@ -42,7 +43,8 @@ def ParseFFMpegMetaData():
   return result
 
 def VideoHtmlTag(filelocation):
-  subprocess.call(["ffmpeg", "-i", filelocation, "-f", "ffmetadata", "FFMETADATAFILE.txt", "-y"])
+  localFileLocation = os.path.join(TEMPLATE_PATH, filelocation)
+  subprocess.call(["ffmpeg", "-i", localFileLocation, "-f", "ffmetadata", "FFMETADATAFILE.txt", "-y"])
   metaData = ParseFFMpegMetaData()
   
   html = ''
@@ -52,7 +54,7 @@ def VideoHtmlTag(filelocation):
   html += '         <source src=' + filelocation + ' type="video/mp4">\n'
   html += '     </video>\n'
   html += '     <h1>' + metaData['title'] + '</h1>\n'
-  html += '     <div class="video">' + metaData['body'] + '</div>\n'
+  html += '     <div class="video-body">' + metaData['body'] + '</div>\n'
 
 
   html += '   </div>\n</div>\n'

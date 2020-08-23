@@ -5,10 +5,18 @@ DATA = {
 
       "css": """ 
     .video{
-      width: 65%;
+      width: 75%;
       display: block;
       margin: 0 auto;
+      padding-top: 1vw;
       font-size: calc(15px + (30 - 20) * ((150vw - 350px) / (1600 - 300)));
+     }
+     .video-body{
+      width: 75%;
+      display: block;
+      margin: 0 auto;
+      padding-bottom: 5vw;
+      font-size: calc(10px + (30 - 20) * ((150vw - 350px) / (1600 - 300)));
      }
     .page {
       display: table-cell;

@@ -74,15 +74,14 @@ def video_to_html(directory):
     templatePath = os.path.join("templates", TEMPLATE_DIR)
     localVideoPath = os.path.join(SCRIPT_PATH, templatePath)
     localVideoPath = os.path.join(localVideoPath, "videos")
-    print("localVideoPath")
-    print(localVideoPath)
-    # media_action.ClearFolder(localVideoPath )
+    video_parser.TEMPLATE_PATH = templatePath
 
     for f in sorted(os.listdir(directory)):
         filename = os.fsdecode(f)
         if filename.endswith(".mp4") or filename.endswith(".webm") or filename.endswith(".ogg"):
             srcPath = os.path.join(directory, filename)
             destPath = os.path.join(localVideoPath, filename)
+            appVideoPath = os.path.join("videos", filename)
 
             media_action.CopyVideoFile(srcPath, destPath)
             pathList.insert(index, destPath)
