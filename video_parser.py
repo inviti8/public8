@@ -2,48 +2,57 @@ import html
 import subprocess
 
 
+def ParseBodyContent(line, fullText):
+  result = ""
+  if "comment=" in line:
+    result = line.replace("comment=", "")
+    return result
+
+  elif ";FFMETADATA1" not in line and "major_brand=" not in line and "minor_version=" not in line and "compatible_brands=" not in line and "title=" not in line and "encoder=" not in line and "date=" not in line:
+    result = fullText + line
+  elif ";FFMETADATA1" in line or "major_brand=" in line or "minor_version=" in line or "compatible_brands=" in line or "title=" in line or "encoder=" in line or "date=" in line:
+    return None
+
+  return result
+
+
 
 def ParseFFMpegMetaData():
   result = {}
-  props =["major_brand=", "minor_version=", "compatible_brands=", "title=", "date=", "comment=", "encoder="]
-  txtFile = open("FFMETADATAFILE.txt", "r")
   title = ""
   body = ""
-  Lines = txtFile.readlines()
-  # for prop in props:
-  #   for line in Lines:
-  #     text = ""
-  #     if prop == "title=" and "major_brand=" not in line and "minor_version=" not in line and "compatible_brands=" not in line and "comment=" not in line and "encoder=" not in line:
-  #       title += line
-  #     elif prop == "comment=" and "major_brand=" not in line and "minor_version=" not in line and "compatible_brands=" not in line and "title=" not in line and "encoder=" not in line:
-  #       body += line
+  content = ""
+  bodyParsing = False
 
-  for line in Lines:
-    if "title=" in line:
-      title += line
-
-    result['title'] = title
-    result['body'] = body
-
-    return result
+  with open("FFMETADATAFILE.txt", "r") as fp:
+    for cnt, line in enumerate(fp):
+      line = line.strip()
+      if 'title=' in line:
+        title = line.replace('title=', '')
+      elif 'comment=' in line or bodyParsing:
+        bodyParsing = True
+        content = ParseBodyContent(line, content)
+        if content != None:
+          body += content
 
 
+  result['title'] = title
+  result['body'] = body
 
+  return result
 
 def VideoHtmlTag(filelocation):
   subprocess.call(["ffmpeg", "-i", filelocation, "-f", "ffmetadata", "FFMETADATAFILE.txt", "-y"])
   metaData = ParseFFMpegMetaData()
-  print("][][][][][][][][][][][][][][][][][][][][][][][]")
-  print(metaData['title'])
-  print("][][][][][][][][][][][][][][][][][][][][][][][]")
+  
   html = ''
   html += '<div class="outer r4x3">\n'
   html += '  <div class="inner">\n'
-  html += '     <video class="video" width="50%" height="auto" controls="true">\n'
+  html += '     <video class="video" controls="true">\n'
   html += '         <source src=' + filelocation + ' type="video/mp4">\n'
   html += '     </video>\n'
   html += '     <h1>' + metaData['title'] + '</h1>\n'
-  html += '     <div>' + metaData['body'] + '</div>\n'
+  html += '     <div class="video">' + metaData['body'] + '</div>\n'
 
 
   html += '   </div>\n</div>\n'
