@@ -205,6 +205,7 @@ class AppButton(Button):
 
             if validPath is not None:
                 app.root.ids.wallet_key_text_input.text = validPath
+                arweave_com.WALLET_PATH = validPath
             else:
                 app.root.ids.wallet_key_text_input.text = "INVALID SELECTION!"
 
@@ -261,6 +262,11 @@ class AppButton(Button):
 
         elif self.name is "FORGET_WALLET_KEY_BUTTON":
             print("forget wallet key")
+
+        elif self.name is "WALLET_BALANCE_BUTTON":
+            print("get wallet ballance")
+            info = arweave_com.wallet_balance()
+            app.root.ids.wallet_console_text_input.text = info
 
         pass
 

@@ -1,13 +1,14 @@
 import os
 import webbrowser
 import jinja2
+import inspect
 import html_parser
 
 import index_render_data
 
 SCRIPT_PATH = os.path.realpath(__file__)
 FILE_NAME = os.path.basename(SCRIPT_PATH)
-PATH = SCRIPT_PATH.replace(FILE_NAME, "")
+PATH = os.path.dirname(os.path.realpath(inspect.stack()[0][1]))
 
 TITLE = None
 CSS = None

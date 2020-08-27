@@ -232,12 +232,12 @@
 
                 Label:
                     text: "Key Path"
-                    size_hint: 0.3, 0.2
+                    size_hint: 0.1, 0.2
 
                 AppTextInput:
                     id: wallet_key_text_input
                     name: "WALLET_KEY_TEXT_INPUT"
-                    size_hint: 0.7, 0.2
+                    size_hint: 0.9, 0.2
                     font_size: 10
 
                 AppButton:
@@ -246,22 +246,35 @@
                     text: "LOAD KEY FILE"
                     size_hint: 0.2, 0.2
 
-            AppButton:
-                id: create_wallet_key_button
-                name: "CREATE_WALLET_KEY_BUTTON"
-                text: "CREATE KEY FILE"
-                size_hint: 1, 0.1
+            # AppButton:
+            #     id: create_wallet_key_button
+            #     name: "SAVE_WALLET_KEY_BUTTON"
+            #     text: "SAVE KEY FILE"
+            #     size_hint: 1, 0.1
 
+            # AppButton:
+            #     id: forget_wallet_key_button
+            #     name: "FORGET_WALLET_KEY_BUTTON"
+            #     text: "FORGET KEY"
+            #     size_hint: 1, 0.1
+            
             AppButton:
-                id: forget_wallet_key_button
-                name: "FORGET_WALLET_KEY_BUTTON"
-                text: "FORGET KEY"
+                id: wallet_balance_button
+                name: "WALLET_BALANCE_BUTTON"
+                text: "WALLET BALANCE"
                 size_hint: 1, 0.1
 
             BoxLayout:
                 orientation: 'vertical'
                 padding: 10
                 size_hint: 1, 0.35
+
+                ConsoleTextInput:
+                    id: wallet_console_text_input
+                    name: "CONSOLE_WALLET_TEXT_INPUT"
+                    text: "Wallet Console"
+                    size_hint: 1, 1
+                    size: 50, 50
 
                 Label:
                     text: " "
