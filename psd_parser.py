@@ -120,7 +120,6 @@ def PSDHtmlAndCssParser(filelocation):
   css += '  left: 0;\n'
   css += '  right: 0;\n'
   css += '  bottom: 0;\n'
-  css += '  outline: 1px solid grey;\n'
   css += '}\n'
 
   html += '<div class="outer r4x3">\n'
