@@ -5,7 +5,7 @@ import json
 import html_parser
 
 PATH = os.path.dirname(os.path.realpath(inspect.stack()[0][1]))
-ARWEAVE = os.path.join(PATH, "arweave")
+ARWEAVE = os.path.join(PATH, "arweave-x64")
 WALLET_PATH = None
 
 def network_info():
@@ -34,6 +34,16 @@ def wallet_balance():
 
     return result
 
+def test_package(srcHTML, destHTML):
+    result = subprocess.run([ARWEAVE, 'package', srcHTML, destHTML, "--force-skip-warnings"], stdout=subprocess.PIPE)
+    result = result.stdout.decode('utf-8')
+    print(result)
+
 
 def deploy_app():
     print("arweave deploy app")
+    if WALLET_PATH != None:
+        print(WALLET_PATH)
+        result = subprocess.run([ARWEAVE, 'balance', '--key-file', WALLET_PATH], stdout=subprocess.PIPE)
+        result = result.stdout.decode('utf-8')
+        print("Wallet balance is: " + result)

@@ -23,6 +23,12 @@ def docx_to_html(docx):
     print("Convert: " + docx + " to html." )
     result = None
 
+    templatePath = os.path.join("templates", TEMPLATE_DIR)
+    localVideoPath = os.path.join(SCRIPT_PATH, templatePath)
+    localVideoPath = os.path.join(localVideoPath, "videos")
+
+    media_action.ClearFolder(localVideoPath)
+
     with open(docx, "rb") as docx_file:
         result = mammoth.convert_to_html(docx_file)
         html = result.value # The generated HTML
@@ -37,6 +43,12 @@ def psd_to_html(directory):
     indexList = []
     chapterList = []
     index = 0
+
+    templatePath = os.path.join("templates", TEMPLATE_DIR)
+    localVideoPath = os.path.join(SCRIPT_PATH, templatePath)
+    localVideoPath = os.path.join(localVideoPath, "videos")
+
+    media_action.ClearFolder(localVideoPath)
 
     for f in sorted(os.listdir(directory)):
         filename = os.fsdecode(f)
@@ -80,7 +92,7 @@ def video_to_html(directory):
 
     for f in sorted(os.listdir(directory)):
         filename = os.fsdecode(f)
-        if filename.endswith(".mp4") or filename.endswith(".webm") or filename.endswith(".ogg"):
+        if filename.endswith(".mp4"):
             srcPath = os.path.join(directory, filename)
             destPath = os.path.join(localVideoPath, filename)
             appVideoPath = os.path.join("videos", filename)

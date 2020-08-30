@@ -4,6 +4,15 @@ DATA = {
     "splitter_carousel":{
 
       "css": """ 
+    .hamburger {
+      position: relative;
+      display: inline-block;
+      width: 1.25em;
+      height: 0.8em;
+      margin-right: 0.3em;
+      border-top: 0.2em solid #fff;
+      border-bottom: 0.2em solid #fff;
+    }
     .video{
       width: 75%;
       display: block;

@@ -5,6 +5,8 @@ import inspect
 import html_parser
 
 import index_render_data
+import media_action
+import arweave_com
 
 SCRIPT_PATH = os.path.realpath(__file__)
 FILE_NAME = os.path.basename(SCRIPT_PATH)
@@ -50,6 +52,7 @@ def create_text_content_and_open():
         html_file = os.path.join(template_path, PAGE)
         
         template_data = index_render_data.DATA[TEMPLATE_DIR]
+        # media_action.ClearTestFolder()
 
         if TITLE != None:
             template_data.update({"title": TITLE})
@@ -89,7 +92,14 @@ def create_text_content_and_open():
             result_file.write(output_text)
             result_file.close
 
-        webbrowser.open(html_file, new_tab)
+        arweave_com.test_package(html_file, media_action.TestHTMLFilePath())
+
+        testIndexFile = media_action.GetTestIndexFile()
+
+        if testIndexFile != None:
+            webbrowser.open(testIndexFile, new_tab)
+
+        # webbrowser.open(html_file, new_tab)
 
 def create_psd_content_and_open():
     print(" creating psd content and opening")
@@ -101,6 +111,7 @@ def create_psd_content_and_open():
         html_file = os.path.join(template_path, PAGE)
         
         template_data = index_render_data.DATA[TEMPLATE_DIR]
+        # media_action.ClearTestFolder()
 
         if TITLE != None:
             template_data.update({"title": TITLE})
@@ -138,7 +149,14 @@ def create_psd_content_and_open():
             result_file.write(output_text)
             result_file.close
 
-        webbrowser.open(html_file, new_tab)
+        arweave_com.test_package(html_file, media_action.TestHTMLFilePath())
+
+        testIndexFile = media_action.GetTestIndexFile()
+
+        if testIndexFile != None:
+            webbrowser.open(testIndexFile, new_tab)
+
+        # webbrowser.open(html_file, new_tab)
 
 
 def create_video_content_and_open():
@@ -151,6 +169,7 @@ def create_video_content_and_open():
         html_file = os.path.join(template_path, PAGE)
         
         template_data = index_render_data.DATA[TEMPLATE_DIR]
+        # media_action.ClearTestFolder()
 
         if TITLE != None:
             template_data.update({"title": TITLE})
@@ -186,5 +205,14 @@ def create_video_content_and_open():
             result_file.write(output_text)
             result_file.close
 
-        webbrowser.open(html_file, new_tab)
+        # media_action.ClearTestFolder()
+        # media_action.MoveTemplateToTest(template_path)
+        arweave_com.test_package(html_file, media_action.TestHTMLFilePath())
+
+        testIndexFile = media_action.GetTestIndexFile()
+
+        if testIndexFile != None:
+            webbrowser.open(testIndexFile, new_tab)
+
+        # webbrowser.open(html_file, new_tab)
         
