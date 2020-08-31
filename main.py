@@ -213,12 +213,13 @@ class AppButton(Button):
         app = App.get_running_app()
 
         if self.name is "DEPLOY_APP_BUTTON":
-            arweave_com.deploy_app()
+            arweave_output = arweave_com.deploy_app()
+            app.root.ids.console_text_input.text = arweave_output
 
         elif self.name is "TEST_APP_BUTTON":
-            print("test app")
-            
-            file_action.open_test_page()
+            print("test app") 
+            arweave_output = file_action.open_test_page()
+            app.root.ids.console_text_input.text = arweave_output
 
         elif self.name is "CONTENT_PATH_LOAD_BUTTON":
             print("load content path")
@@ -264,7 +265,12 @@ class AppButton(Button):
             print("forget wallet key")
 
         elif self.name is "WALLET_BALANCE_BUTTON":
-            print("get wallet ballance")
+            print("get wallet balance")
+            info = arweave_com.wallet_balance()
+            app.root.ids.wallet_console_text_input.text = info
+
+        elif self.name is "TRANSACTION_STATUS_BUTTON":
+            print("get transaction status")
             info = arweave_com.wallet_balance()
             app.root.ids.wallet_console_text_input.text = info
 
@@ -285,6 +291,11 @@ class AppTextInput(TextInput):
         elif self.name is "CSS_TEXT_INPUT":
             print("update css:")
             file_action.CSS = self.text
+            
+        elif self.name is "TRANSACTION_HASH_TEXT_INPUT":
+            print("set transaction Hash:")
+            arweave_com.HASH = self.text
+            
 
 class ConsoleTextInput(TextInput):
     '''

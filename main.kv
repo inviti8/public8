@@ -223,28 +223,63 @@
         text: 'ARWEAVE'
         BoxLayout:
             orientation: 'vertical'
-            padding: 10
-            spacing: 10
+            size_hint: 1, 1
+            padding: 1
+            spacing: 1
+
             BoxLayout:
                 orientation: 'horizontal'
-                padding: 10
-                size_hint: 1, 0.35
+                size_hint: 1, 0.2
+                padding: 1
+                spacing: 1
 
                 Label:
                     text: "Key Path"
-                    size_hint: 0.1, 0.2
+                    size_hint: 0.1, 0.5
 
                 AppTextInput:
                     id: wallet_key_text_input
                     name: "WALLET_KEY_TEXT_INPUT"
-                    size_hint: 0.9, 0.2
+                    size_hint: 0.9, 0.5
                     font_size: 10
 
                 AppButton:
                     id: load_wallet_key_button
                     name: "LOAD_WALLET_KEY_BUTTON"
                     text: "LOAD KEY FILE"
-                    size_hint: 0.2, 0.2
+                    size_hint: 0.2, 0.5
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, 0.2
+                padding: 1
+                spacing: 1
+
+                Label:
+                    text: "Hash"
+                    size_hint: 0.1, 0.5
+
+                AppTextInput:
+                    id: transaction_hash_text_input
+                    name: "TRANSACTION_HASH_TEXT_INPUT"
+                    size_hint: 0.9, 0.5
+                    font_size: 10
+
+                AppButton:
+                    id: transaction_status_button
+                    name: "TRANSACTION_STATUS_BUTTON"
+                    text: "STATUS"
+                    size_hint: 0.2, 0.5
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 1, 0.1
+                padding: 1
+                spacing: 1
+
+                Label:
+                    text: "   "
+                    size_hint: 0.1, 0.5
 
             # AppButton:
             #     id: create_wallet_key_button
