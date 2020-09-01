@@ -1,4 +1,5 @@
 #:kivy 1.11.1
+#:import hex kivy.utils.get_color_from_hex
 
 #Shared attributes
 <Popup>:
@@ -8,45 +9,106 @@
     dirselect: True
 
 <AppButton>:
-    color:  0, .7, .8, 1
-    radius: 10, 10, 10, 10
+    markup: True
+    background_normal:''
+    background_color:0,0,0,0
+    color: 0,0,0,0
+    opacity: 1
+    on_press: self.on_btn_press(self)
+    canvas.before:
+        Color:
+            rgba: hex('#56426c')
+        RoundedRectangle:
+            radius: 5, 5, 5, 5
+            pos: self.pos
+            size: self.size
 
 <AppSpinner>:
     size: 30, 44
     size_hint: 1, 0.85
-    color:  0, .7, .8, 1
+    color:  0,0,0,0
+    background_color: 0,0,0,0
+    opacity: 1
     on_text: self.on_spinner_change()
+    on_press: self.on_btn_press(self)
     size_hint: 0.5, 0.7
+    canvas.before:
+        Color:
+            rgba: hex('#56426c')
+        RoundedRectangle:
+            radius: 30, 5, 5, 5
+            pos: self.pos
+            size: self.size
 
 <AppTextInput>:
-    background_color: 0, .5, .65, 1
+    background_color: 0, 0, 0, 1
+    foreground_color: hex('#5dd6c9')
     on_text: self.on_text_input_change()
     font_size: 10
+    
 
 <ConsoleTextInput>:
     background_color: 0, 0, 0, 1
-    foreground_color: 0, .75, .85, 1
+    foreground_color: hex('#5dd6c9')
     readonly: True
     on_text: self.on_text_input_change()
 
 <Label>:
-    color: 0, .75, .85, 1
+    color: hex('#5dd6c9')
+    markup: True
 
 
 <TabLayout>:
     size_hint: 1, 1
     pos_hint: {'center_x': .5, 'center_y': .5}
     do_default_tab: False
+    color:  0, 0, 0, 1
     rows: 3
+    canvas: 
+        Color: 
+            rgba: hex('#3a2c48')
+        RoundedRectangle:
+            radius: 5, 5, 5, 5 
+            pos: self.pos 
+            size: self.size 
     
-
     TabbedPanelItem:
+        id: main_tab
         text: 'PUBLISH'
+        background_color:  0, 0, 0, 0
+        opacity: 1
+        canvas.before:
+            Color:
+                rgba: hex('#4a395c')
+            RoundedRectangle:
+                radius: 2, 30, 0, 0
+                pos: self.pos
+                size: self.size
+
         GridLayout:
             cols: 2
+            canvas: 
+                Color: 
+                    rgba: hex('#4a395c')
+                RoundedRectangle:
+                    radius: 5, 5, 5, 5 
+                    pos: self.pos 
+                    size: self.size 
 
             BoxLayout:
                 orientation: 'vertical'
+                canvas.before:
+                    Color:
+                        rgba: 1,1,1,0.03
+                    Triangle:
+                        points:[0, self.height, self.width-(.4*self.height), self.height, 0, self.height*0.8]
+                    Color:
+                        rgba: 1,1,1,0.03
+                    Triangle:
+                        points:[0, self.height, self.width*1, self.height, 0, self.height-(.4*self.height)]
+                    
+                    
+
 
                 BoxLayout:
                     orientation: 'horizontal'
@@ -70,7 +132,6 @@
                         name: "TITLE_TEXT_INPUT"
                         text: "Enter Title"
                         size_hint: 1, 0.7
-                        background_color: 0, .5, .65, 1
                         multiline: False
 
 
@@ -192,6 +253,7 @@
                     orientation: 'horizontal'
                     padding: 10
                     size_hint: 1, 0.25
+                    spacing: 15
 
                     AppButton:
                         id: test_app_button
@@ -220,60 +282,78 @@
             
 
     TabbedPanelItem:
+        id: arweave_tab
         text: 'ARWEAVE'
+        background_color:  0, 0, 0, 0
+        opacity: 1
+        canvas.before:
+            Color:
+                rgba: hex('#4a395c')
+            RoundedRectangle:
+                radius: 2, 30, 0, 0
+                pos: self.pos
+                size: self.size
+
         BoxLayout:
             orientation: 'vertical'
             size_hint: 1, 1
             padding: 1
             spacing: 1
+            canvas: 
+                Color: 
+                    rgba: hex('#4a395c')
+                RoundedRectangle:
+                    radius: 5, 5, 5, 5 
+                    pos: self.pos 
+                    size: self.size 
 
             BoxLayout:
                 orientation: 'horizontal'
-                size_hint: 1, 0.2
+                size_hint: 0.95, 0.25
                 padding: 1
                 spacing: 1
 
                 Label:
                     text: "Key Path"
-                    size_hint: 0.1, 0.5
+                    size_hint: 0.1, 0.25
 
                 AppTextInput:
                     id: wallet_key_text_input
                     name: "WALLET_KEY_TEXT_INPUT"
-                    size_hint: 0.9, 0.5
+                    size_hint: 0.9, 0.25
                     font_size: 10
 
                 AppButton:
                     id: load_wallet_key_button
                     name: "LOAD_WALLET_KEY_BUTTON"
                     text: "LOAD KEY FILE"
-                    size_hint: 0.2, 0.5
+                    size_hint: 0.2, 0.25
 
             BoxLayout:
                 orientation: 'horizontal'
-                size_hint: 1, 0.2
+                size_hint: 0.95, 0.25
                 padding: 1
                 spacing: 1
 
                 Label:
                     text: "Hash"
-                    size_hint: 0.1, 0.5
+                    size_hint: 0.1, 0.25
 
                 AppTextInput:
                     id: transaction_hash_text_input
                     name: "TRANSACTION_HASH_TEXT_INPUT"
-                    size_hint: 0.9, 0.5
+                    size_hint: 0.9, 0.25
                     font_size: 10
 
                 AppButton:
                     id: transaction_status_button
                     name: "TRANSACTION_STATUS_BUTTON"
                     text: "STATUS"
-                    size_hint: 0.2, 0.5
+                    size_hint: 0.2, 0.25
 
             BoxLayout:
                 orientation: 'horizontal'
-                size_hint: 1, 0.1
+                size_hint: 0.95, 0.1
                 padding: 1
                 spacing: 1
 

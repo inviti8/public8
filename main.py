@@ -11,10 +11,12 @@ from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
 from kivy.properties import ListProperty
 from kivy.lang import Builder
+from kivy.config import Config
 from pathlib import Path
 import arweave_com
 import app_builder
 import file_action
+import ui_animation
 import os
 import string
 import ntpath
@@ -209,6 +211,12 @@ class AppButton(Button):
             else:
                 app.root.ids.wallet_key_text_input.text = "INVALID SELECTION!"
 
+    def on_btn_press(self, widget, *args):
+        ui_animation.on_button_press(widget)
+
+    def on_tab_press(self, widget, *args):
+        ui_animation.on_button_press(widget)
+
     def on_release(self):
         app = App.get_running_app()
 
@@ -291,7 +299,7 @@ class AppTextInput(TextInput):
         elif self.name is "CSS_TEXT_INPUT":
             print("update css:")
             file_action.CSS = self.text
-            
+
         elif self.name is "TRANSACTION_HASH_TEXT_INPUT":
             print("set transaction Hash:")
             arweave_com.HASH = self.text
@@ -316,6 +324,9 @@ class AppSpinner(Spinner):
     '''
     Handle the dropdowns
     '''
+    def on_btn_press(self, widget, *args):
+        ui_animation.on_button_press(widget)
+        
     def on_kv_post(self, input):
         if self.name is "TEMPLATE_SPINNER":
             file_action.TEMPLATE_DIR = self.text
