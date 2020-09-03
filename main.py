@@ -168,7 +168,9 @@ class TabLayout(TabbedPanel):
 
     def on_kv_post(self, widget):
         tabs = self.get_tab_list()
-        ui_animation.tab_off(tabs[0])
+
+
+        
 
     def update_css(self, text):
         return file_action.UpdateCss()
@@ -176,20 +178,16 @@ class TabLayout(TabbedPanel):
     def on_tab_touch(self, widget, *args):
         tabs = self.get_tab_list()
 
-        if self.activeTab != widget.text  and self.current_tab.text != widget.text and self.tabChange == False:
-            self.tabChange = True
-            if widget.text == "PUBLISH" and widget.opacity == 0.5:
-                ui_animation.tab_on(widget)
+        if not widget.active and widget.opacity == 0.5:
+
+            if widget.text == "PUBLISH":
+                ui_animation.tab_on(tabs[1])
                 ui_animation.tab_off(tabs[0])
-                self.activeTab = "PUBLISH"
 
-            elif widget.text == "ARWEAVE" and widget.opacity == 0.5:
-                ui_animation.tab_on(widget)
+            elif widget.text == "ARWEAVE":
+                ui_animation.tab_on(tabs[0])
                 ui_animation.tab_off(tabs[1])
-                self.activeTab = "ARWEAVE"
 
-            time.sleep(0.3)
-            self.tabChange = False
 
 
 class AppButton(Button):
@@ -352,13 +350,13 @@ class AppSpinner(Spinner):
         ui_animation.on_button_press(widget)
         
     def on_kv_post(self, input):
+        
         if self.name is "TEMPLATE_SPINNER":
             file_action.TEMPLATE_DIR = self.text
 
     def on_spinner_change(self):
         print("on spinner change")
         app = App.get_running_app()
-        print(app.root)
 
         if self.name is "TYPE_SPINNER":
             app_builder.ARWEAVE_APP_TYPE = self.text
