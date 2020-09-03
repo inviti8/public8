@@ -41,7 +41,7 @@ def DriveChooser(button):
     Dialog With button for each drive
     '''
     app = App.get_running_app()
-    container = BoxLayout(orientation='vertical')
+    container = BoxLayout(orientation='vertical', padding=[10,10,10,10], spacing=10)
 
     for drive in DRIVES:
         button = AppButton(text=drive, name="DRIVE_BUTTON_" + drive, size_hint=(1, 0.1))
@@ -149,11 +149,12 @@ def ProcessContentFile(file_path):
     elif app.content_type.lower() == "video":
         file_action.VIDEO_CONTENT = app_builder.video_to_html(file_path)
 
-
 class TabLayout(TabbedPanel):
     '''
     Tab layout, access via app.root
     '''
+    activeTab = "PUBLISH"
+    tabChange = False
     current_drive = StringProperty(HOME_PATH)
     content_type = StringProperty(None)
     key_file_path = StringProperty(None)
@@ -162,11 +163,34 @@ class TabLayout(TabbedPanel):
     popup = ObjectProperty(None)
     next_popup = ObjectProperty(None)
 
+    app = App.get_running_app()
+
+
+    def on_kv_post(self, widget):
+        tabs = self.get_tab_list()
+        ui_animation.tab_off(tabs[0])
+
     def update_css(self, text):
         return file_action.UpdateCss()
 
-    def on_content_type_change(self, value):
-        print(value)
+    def on_tab_touch(self, widget, *args):
+        tabs = self.get_tab_list()
+
+        if self.activeTab != widget.text  and self.current_tab.text != widget.text and self.tabChange == False:
+            self.tabChange = True
+            if widget.text == "PUBLISH" and widget.opacity == 0.5:
+                ui_animation.tab_on(widget)
+                ui_animation.tab_off(tabs[0])
+                self.activeTab = "PUBLISH"
+
+            elif widget.text == "ARWEAVE" and widget.opacity == 0.5:
+                ui_animation.tab_on(widget)
+                ui_animation.tab_off(tabs[1])
+                self.activeTab = "ARWEAVE"
+
+            time.sleep(0.3)
+            self.tabChange = False
+
 
 class AppButton(Button):
     '''
