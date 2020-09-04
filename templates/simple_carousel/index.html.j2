@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carousel</title>
+  <link rel="stylesheet" href= "css/onsenui.css">
+  <link rel="stylesheet" type="text/css" href="css/magnifier.css">
+  <link rel="stylesheet" href= "{{ css_theme }}" >
+
+  <script src="js/onsenui.js"></script>
+
+  <script src="js/index.js"></script>
+
+  <style>
+    {{ css }}
+    {% for inline_css in inline_css_list %}
+        {{ inline_css }}
+    {% endfor %}
+  </style>
+
+</head>
+
+<body>
+        <ons-splitter>
+                <ons-splitter-side id="menu" side="left" width="220px" collapse swipeable>
+                  <ons-page>
+                    <ons-list>
+                      <ons-list-item onclick="fn.load('home.html')" tappable>
+                        Home
+                      </ons-list-item>
+                      <ons-list-item onclick="fn.load('about.html')" tappable>
+                        About
+                      </ons-list-item>
+                      <ons-list-item expandable>
+                        Contents
+                        <div class="expandable-content">
+                          <ons-list>
+                            {% for chapter in chapter_list %}
+
+                              <ons-list-item tappable id= "chapter_{{ chapter_index_list[loop.index0] }}" onclick="fn.chapterOnClick(this)"> {{ chapter }}</ons-list-item>
+                            {% endfor %}
+                          </ons-list>
+                        </div>
+                      </ons-list-item>
+                    </ons-list>
+                  </ons-page>
+                </ons-splitter-side>
+                <ons-splitter-content id="content" page="home.html"></ons-splitter-content>
+              </ons-splitter>
+              
+              <template id="home.html">
+                <ons-page>
+
+                  <ons-fab n onclick="fn.open()">
+                    <p class="hamburger"> &#9776; </p>
+                  </ons-fab modifier="mini">
+                    <div class="right">
+                      <ons-fab modifier="mini" id="pageCountFab" style=" font-size: x-large;"></ons-fab>
+                    </div>
+                  <ons-page>
+                        <ons-carousel id="AppCarousel" initial-index="0" swipeable overscrollable auto-scroll auto-refresh fullscreen auto-scroll-ratio="0.2" direction={{ page_direction }}>
+                        {% for content in content_list %}
+                        <ons-carousel-item overflow-y: scroll; height:90vh;><div class="page" > {{ content }} </div></ons-carousel-item>
+                        {% endfor %}
+                    </ons-page>
+                </ons-page>
+              </template>
+              
+              <template id="settings.html">
+                <ons-page>
+                  <ons-toolbar>
+                    <div class="left">
+                      <ons-toolbar-button onclick="fn.open()">
+                        <ons-button>
+                          <p class="hamburger"> &#9776; </p>
+                        </ons-button>
+                      </ons-toolbar-button>
+                    </div>
+                    <div class="center">
+                      Settings
+                    </div>
+                  </ons-toolbar>
+                </ons-page>
+              </template>
+              
+              <template id="about.html">
+                <ons-page>
+                  <ons-toolbar>
+                    <div class="left">
+                      <ons-toolbar-button onclick="fn.open()">
+                        <ons-button>
+                          <p class="hamburger"> &#9776; </p>
+                        </ons-button>
+                      </ons-toolbar-button>
+                    </div>
+                    <div class="center">
+                      About
+                    </div>
+                  </ons-toolbar>
+                </ons-page>
+              </template>
+
+              <template id="img-dialog.html">
+                <ons-dialog id="img-dialog">
+                  <div style="position:absolute;">
+                    <ons-button onclick="hideDialog('img-dialog')">Close</ons-button>
+                  </div>
+                  <div id="img-dialog-container" style="align-content: center;  padding: 10px; width:90vw; height:90vh;">
+                  </div>
+                </ons-dialog>
+              </template>
+<script type="text/javascript" src="js/Event.js"></script>   
+<script type="text/javascript" src="js/Magnifier.js"></script>
+
+</body>
+</html>

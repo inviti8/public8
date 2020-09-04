@@ -142,8 +142,7 @@ def ProcessContentFile(file_path):
         content = app_builder.docx_to_html(file_path)
         tmp_file = os.path.join(PATH, "tmp")
         file_action.DOC_CONTENT = content.value
-        print(content.messages)
-        # print(content.value)
+
     elif app.content_type.lower() == "psd":
         file_action.PSD_CONTENT = app_builder.psd_to_html(file_path)
     elif app.content_type.lower() == "video":
@@ -169,9 +168,6 @@ class TabLayout(TabbedPanel):
     def on_kv_post(self, widget):
         tabs = self.get_tab_list()
 
-
-        
-
     def update_css(self, text):
         return file_action.UpdateCss()
 
@@ -187,7 +183,6 @@ class TabLayout(TabbedPanel):
             elif widget.text == "ARWEAVE":
                 ui_animation.tab_on(tabs[0])
                 ui_animation.tab_off(tabs[1])
-
 
 
 class AppButton(Button):
