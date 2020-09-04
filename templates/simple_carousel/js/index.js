@@ -40,7 +40,7 @@ ons.ready(function() {
     ACTIVE_IMG = activeImg;
     console.log(activeImg)
     console.log('Changed to ' + event.activeIndex)
-    countFab.innerHTML = '<p style="text-align: center; font-size: 1.7vh;"> ' + event.activeIndex + '</p>';
+    countFab.innerHTML = '<p style="text-align: center; font-size: 1em;"> ' + event.activeIndex + '</p>';
 
     var images = document.getElementsByClassName("img");
 

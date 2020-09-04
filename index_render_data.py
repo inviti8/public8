@@ -8,6 +8,10 @@ DATA = {
       text-align: center;
       font-size:x-large;
     }
+    .center-text {
+       text-align: center;
+       line-height: 100px;
+    }
     .video{
       width: 75%;
       display: block;
@@ -66,10 +70,14 @@ DATA = {
       text-align: center;
       font-size:x-large;
     }
+    .center-text {
+       text-align: center;
+       line-height: 100px;
+    }
     #pageCountFab {
-        position: absolute;
-        right: 5vw;
-        bottom: 15vh;
+        position: fixed;
+        right: 15px;
+        bottom: 15px;
     }
     .video{
       width: 75%;

@@ -12,7 +12,6 @@ SCRIPT_PATH = os.path.dirname(os.path.realpath(inspect.stack()[0][1]))
 TEMPLATE_DIR = None
 ARWEAVE_APP_TYPE = None
 ARWEAVE_APP_TITLE = None
-AUTHOR = None
 CSS = None
 CONTENT_TYPE = None
 CONTENT_PATH = None

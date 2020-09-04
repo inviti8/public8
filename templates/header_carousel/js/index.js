@@ -14,7 +14,7 @@ window.fn.chapterOnClick = function(el) {
     var index = parseInt(split[1]);
 
     carousel.setActiveIndex(index);
-    countFab.innerHTML = '<p style="text-align: center; font-size: 1.7vh;"> ' + index + '</p>';
+    countFab.innerHTML = '<p style="text-align: center; font-size: 1em;"> ' + index + '</p>';
     
 }
 
@@ -40,7 +40,7 @@ ons.ready(function() {
     ACTIVE_IMG = activeImg;
     console.log(activeImg)
     console.log('Changed to ' + event.activeIndex)
-    countFab.innerHTML = '<p style="text-align: center; font-size: 1.7vh;"> ' + event.activeIndex + '</p>';
+    countFab.innerHTML = '<p style="text-align: center; font-size: 1em;"> ' + event.activeIndex + '</p>';
 
     var images = document.getElementsByClassName("img");
 

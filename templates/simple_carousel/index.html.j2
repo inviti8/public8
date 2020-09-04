@@ -52,9 +52,9 @@
               <template id="home.html">
                 <ons-page>
 
-                  <ons-fab n onclick="fn.open()">
-                    <p class="hamburger"> &#9776; </p>
-                  </ons-fab modifier="mini">
+                  <ons-fab  modifier="mini" onclick="fn.open()">
+                    <p class="hamburger" style=" font-size: x-large;"> &#9776; </p>
+                  </ons-fab>
                     <div class="right">
                       <ons-fab modifier="mini" id="pageCountFab" style=" font-size: x-large;"></ons-fab>
                     </div>
@@ -86,18 +86,12 @@
               
               <template id="about.html">
                 <ons-page>
-                  <ons-toolbar>
-                    <div class="left">
-                      <ons-toolbar-button onclick="fn.open()">
-                        <ons-button>
-                          <p class="hamburger"> &#9776; </p>
-                        </ons-button>
-                      </ons-toolbar-button>
-                    </div>
-                    <div class="center">
-                      About
-                    </div>
-                  </ons-toolbar>
+                  <ons-fab modifier="mini" onclick="fn.open()">
+                    <p class="hamburger" style=" font-size: x-large;"> &#9776; </p>
+                  </ons-fab>
+                    <ons-page>
+                        {{ about }}
+                    </ons-page>
                 </ons-page>
               </template>
 

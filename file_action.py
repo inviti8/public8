@@ -13,6 +13,7 @@ FILE_NAME = os.path.basename(SCRIPT_PATH)
 PATH = os.path.dirname(os.path.realpath(inspect.stack()[0][1]))
 
 TITLE = None
+AUTHOR = None
 CSS = None
 PAGE_DIRECTION = None
 TEMPLATE_DIR = None
@@ -31,21 +32,22 @@ def UpdateCss():
     CSS = index_render_data.DATA[TEMPLATE_DIR]
     return CSS["css"]
 
-def open_test_page():
+def open_test_page(popup):
     print("open test page")
     result = None
 
     if CONTENT_TYPE == "Docx":
-        result = create_text_content_and_open()
+        result = create_text_content_and_open(popup)
+        
     elif CONTENT_TYPE == "Psd":
-        result = create_psd_content_and_open()
+        result = create_psd_content_and_open(popup)
     elif CONTENT_TYPE == "Video":
-        result = create_video_content_and_open()
+        result = create_video_content_and_open(popup)
 
     return result
 
 
-def create_text_content_and_open():
+def create_text_content_and_open(popup):
     print("creating text content to test")
     if TEMPLATE_DIR is not None or TEMPLATE_DIR is not "None":
         new_tab = 2
@@ -58,6 +60,9 @@ def create_text_content_and_open():
 
         if TITLE != None:
             template_data.update({"title": TITLE})
+
+        if AUTHOR != None:
+            template_data.update({"about": AUTHOR})
 
         if CSS != None:
             template_data.update({"css": CSS})
@@ -96,6 +101,8 @@ def create_text_content_and_open():
 
         arweave_output = arweave_com.test_package(html_file, media_action.TestHTMLFilePath())
 
+        popup.dismiss()
+
         testIndexFile = media_action.GetTestIndexFile()
 
         if testIndexFile != None:
@@ -104,7 +111,7 @@ def create_text_content_and_open():
         return arweave_output
 
 
-def create_psd_content_and_open():
+def create_psd_content_and_open(popup):
     print(" creating psd content and opening")
     if TEMPLATE_DIR is not None or TEMPLATE_DIR is not "None":
         new_tab = 2
@@ -117,6 +124,9 @@ def create_psd_content_and_open():
 
         if TITLE != None:
             template_data.update({"title": TITLE})
+
+        if AUTHOR != None:
+            template_data.update({"about": AUTHOR})
 
         if CSS != None:
             template_data.update({"css": CSS})
@@ -153,6 +163,8 @@ def create_psd_content_and_open():
 
         arweave_output = arweave_com.test_package(html_file, media_action.TestHTMLFilePath())
 
+        popup.dismiss()
+
         testIndexFile = media_action.GetTestIndexFile()
 
         if testIndexFile != None:
@@ -161,7 +173,7 @@ def create_psd_content_and_open():
         return arweave_output
 
 
-def create_video_content_and_open():
+def create_video_content_and_open(popup):
     print(" creating video content and opening")
     if TEMPLATE_DIR is not None or TEMPLATE_DIR is not "None":
         new_tab = 2
@@ -174,6 +186,9 @@ def create_video_content_and_open():
 
         if TITLE != None:
             template_data.update({"title": TITLE})
+
+        if AUTHOR != None:
+            template_data.update({"about": AUTHOR})
 
         if CSS != None:
             template_data.update({"css": CSS})
@@ -207,6 +222,8 @@ def create_video_content_and_open():
             result_file.close
 
         arweave_output = arweave_com.test_package(html_file, media_action.TestHTMLFilePath())
+
+        popup.dismiss()
 
         testIndexFile = media_action.GetTestIndexFile()
 

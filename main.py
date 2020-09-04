@@ -7,6 +7,7 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.spinner import Spinner
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
+from kivy.uix.image import Image
 from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
 from kivy.properties import ListProperty
@@ -20,6 +21,7 @@ import ui_animation
 import os
 import string
 import ntpath
+from datetime import datetime
 import time
 
 SCRIPT_PATH = scriptpath = os.path.realpath(__file__)
@@ -30,11 +32,26 @@ GUI = Builder.load_file("main.kv")
 HOME_PATH = str(Path.home())
 DRIVES = ['%s:' % d for d in string.ascii_uppercase if os.path.exists('%s:' % d)]
 
+
 def Dialog(title, content, width, height):
     '''
     Create a dialog with a title, passed content, dimensions
     '''
     return Popup(title=title, content=content,size_hint=(None, None), size=(width, height))
+
+def MessageDialog(message):
+    '''
+    Dialog With button for each drive
+    '''
+    container = BoxLayout(orientation='horizontal', padding=[10,10,10,10], spacing=10, )
+    label = Label(text=message)
+
+    container.add_widget(label)
+
+    dlg = Dialog("LOADING...", container, 400, 400)
+
+    return dlg
+
 
 def DriveChooser(button):
     '''
@@ -231,6 +248,11 @@ class AppButton(Button):
     def on_btn_press(self, widget, *args):
         ui_animation.on_button_press(widget)
 
+        if self.name is "TEST_APP_BUTTON":
+            app = App.get_running_app()
+            app.popup = MessageDialog("Building Test Page")
+            app.popup.open()
+
     def on_tab_press(self, widget, *args):
         ui_animation.on_button_press(widget)
 
@@ -243,7 +265,8 @@ class AppButton(Button):
 
         elif self.name is "TEST_APP_BUTTON":
             print("test app") 
-            arweave_output = file_action.open_test_page()
+            
+            arweave_output = file_action.open_test_page(app.popup)
             app.root.ids.console_text_input.text = arweave_output
 
         elif self.name is "CONTENT_PATH_LOAD_BUTTON":
@@ -311,8 +334,26 @@ class AppTextInput(TextInput):
             file_action.TITLE = self.text
 
         elif self.name is "AUTHOR_TEXT_INPUT":
-            app_builder.AUTHOR = self.text
-            
+            author = "By: Unknown"
+            if self.text != "Enter Author":
+                author = " By: " + self.text
+
+            now = datetime.now()
+            format = "%m/%d/%Y"
+            date = now.strftime(format)
+            html = ''
+            html += '<p class="center-text">\n'
+            html += " "
+            html += '</p>\n'
+            html += '<p class="center-text">\n'
+            html += author
+            html += '</p>\n'
+            html += '<p class="center-text">\n'
+            html += 'Published: ' + date
+            html += '</p>\n'
+
+            file_action.AUTHOR = html
+
         elif self.name is "CSS_TEXT_INPUT":
             print("update css:")
             file_action.CSS = self.text
@@ -385,6 +426,7 @@ class AppSpinner(Spinner):
 class TabbedPanelApp(App):
 
     def build(self):
+        self.icon = 'favicon.ico'
         self.title = 'PUBLIC8'
 
         return TabLayout()
