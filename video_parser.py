@@ -1,5 +1,6 @@
 import os
 import subprocess
+import uuid
 
 TEMPLATE_PATH = None
 
@@ -50,7 +51,7 @@ def VideoHtmlTag(filelocation):
   html = ''
   html += '<div class="outer r4x3">\n'
   html += '  <div class="inner">\n'
-  html += '     <video class="video" controls="true">\n'
+  html += '     <video class="video" id="' + str(uuid.uuid4()) + '" controls="true">\n'
   html += '         <source src=' + filelocation + ' type="video/mp4">\n'
   html += '     </video>\n'
   html += '     <h1>' + metaData['title'] + '</h1>\n'

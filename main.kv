@@ -17,7 +17,7 @@
     on_press: self.on_btn_press(self)
     canvas.before:
         Color:
-            rgba: hex('#56426c')
+            rgba: hex('#6d398a')
         RoundedRectangle:
             radius: 5, 5, 5, 5
             pos: self.pos
@@ -39,6 +39,11 @@
             radius: 30, 5, 5, 5
             pos: self.pos
             size: self.size
+    canvas.after:
+        Rectangle:
+            size:30, 16
+            pos: self.pos
+            source: 'dropdown_symbol.png'
 
 <AppTextInput>:
     background_color: 0, 0, 0, 1
@@ -55,6 +60,8 @@
 <Label>:
     color: hex('#5dd6c9')
     markup: True
+    font_size: 15
+    font_name: 'Staatliches-Regular.ttf'
 
 <TabLayout>:
     size_hint: 1, 1
@@ -74,6 +81,7 @@
     TabbedPanelItem:
         id: main_tab
         text: 'PUBLISH'
+        font_size: 20
         background_color:  0, 0, 0, 0
         opacity: 1
         on_touch_up: root.on_tab_touch(self, id)
@@ -259,13 +267,29 @@
                         id: test_app_button
                         name: "TEST_APP_BUTTON"
                         text: "TEST"
+                        font_size: 24
                         size_hint: 0.2, 0.7
+                        canvas.before:
+                            Color:
+                                rgba: hex('#ff6247')
+                            RoundedRectangle:
+                                radius: 5, 5, 5, 5
+                                pos: self.pos
+                                size: self.size
 
                     AppButton:
                         id: deploy_app_button
                         name: "DEPLOY_APP_BUTTON"
                         text: "DEPLOY"
+                        font_size: 24
                         size_hint: 0.2, 0.7
+                        canvas.before:
+                            Color:
+                                rgba: hex('#348a26')
+                            RoundedRectangle:
+                                radius: 5, 5, 5, 5
+                                pos: self.pos
+                                size: self.size
                 
                         
                 BoxLayout:
@@ -284,6 +308,8 @@
     TabbedPanelItem:
         id: arweave_tab
         text: 'ARWEAVE'
+        font_size: 15
+        color: 1,1,1,1
         background_color:  0, 0, 0, 0
         opacity: 0.5
         on_touch_up: root.on_tab_touch(self)
@@ -296,6 +322,12 @@
                 radius: 2, 30, 0, 0
                 pos: self.pos
                 size: self.size
+
+        canvas.after:
+            Rectangle:
+                size:100, 30
+                pos: self.pos
+                source: 'arweave_logo.png'
 
         BoxLayout:
             orientation: 'vertical'
@@ -384,6 +416,7 @@
                     id: wallet_balance_button
                     name: "WALLET_BALANCE_BUTTON"
                     text: "WALLET BALANCE"
+                    font_size: 24
                     size_hint: 1, 0.1
 
             BoxLayout:
@@ -395,5 +428,6 @@
                     id: wallet_console_text_input
                     name: "CONSOLE_WALLET_TEXT_INPUT"
                     text: "Wallet Console"
+                    font_size: 20
                     size_hint: 1, 1
                     size: 50, 50

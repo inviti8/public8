@@ -4,6 +4,9 @@ from html.entities import name2codepoint
 
 HTML_PARSE_OBJECT = {}
 
+class TestFileVideoParser(HTMLParser):
+    print("parse test html file")
+
 class DocHTMLParser(HTMLParser):
     CHAR_PER_PAGE = 5000
     TABLE_ALIGNMENT = "left"

@@ -260,7 +260,19 @@ class AppButton(Button):
         app = App.get_running_app()
 
         if self.name is "DEPLOY_APP_BUTTON":
-            arweave_output = arweave_com.deploy_app()
+
+            app = App.get_running_app()
+            arweave_output = ''
+
+            if app.content_type.lower() == "docx":
+                arweave_output = arweave_com.deploy_app()
+
+            elif app.content_type.lower() == "psd":
+                arweave_output = arweave_com.deploy_app()
+
+            elif app.content_type.lower() == "video":
+                arweave_output = arweave_com.deploy_video_app()
+
             app.root.ids.console_text_input.text = arweave_output
 
         elif self.name is "TEST_APP_BUTTON":
@@ -271,7 +283,7 @@ class AppButton(Button):
 
         elif self.name is "CONTENT_PATH_LOAD_BUTTON":
             print("load content path")
-            
+            file_action.ClearVideoFolder()
             FileChooser_Flow(self, FileChooser_LoadContent, "LOAD CONTENT PATH:")
             app.popup.open()
 
@@ -391,7 +403,7 @@ class AppSpinner(Spinner):
             file_action.TEMPLATE_DIR = self.text
 
     def on_spinner_change(self):
-        print("on spinner change")
+
         app = App.get_running_app()
 
         if self.name is "TYPE_SPINNER":
@@ -413,6 +425,7 @@ class AppSpinner(Spinner):
             if app.root != None:
                 if file_action.TEMPLATE_DIR != None and file_action.TEMPLATE_DIR != 'None':
                     app.root.ids.css_text_input.text = file_action.UpdateCss()
+                    file_action.ClearVideoFolder()
                 
         elif self.name is "PAGE_DIRECTION_SPINNER":
             file_action.PAGE_DIRECTION = self.text

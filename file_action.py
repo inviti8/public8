@@ -27,6 +27,11 @@ PSD_CONTENT = None
 VIDEO_CONTENT = None
 TABLE_ALIGN = "LEFT"
 
+def ClearVideoFolder():
+    template_path = os.path.join(PATH, "templates")
+    template_path = os.path.join(template_path, TEMPLATE_DIR)
+    media_action.ClearFolder(os.path.join(template_path, "videos"))
+
 def UpdateCss():
     print("Update Css")
     CSS = index_render_data.DATA[TEMPLATE_DIR]
@@ -41,6 +46,7 @@ def open_test_page(popup):
         
     elif CONTENT_TYPE == "Psd":
         result = create_psd_content_and_open(popup)
+
     elif CONTENT_TYPE == "Video":
         result = create_video_content_and_open(popup)
 
