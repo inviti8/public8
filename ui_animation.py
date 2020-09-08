@@ -17,3 +17,9 @@ def tab_off(tab):
         anim = Animation(opacity=0.5, duration=0.3)
         anim.start(tab)
         tab.active = False
+
+def loading_anim(widget):
+    anim = Animation(opacity=0.5, duration=0.1)
+    anim += Animation(opacity=1)
+    anim.repeat = True
+    anim.start(widget)

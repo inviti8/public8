@@ -8,6 +8,7 @@ from kivy.uix.spinner import Spinner
 from kivy.uix.popup import Popup
 from kivy.uix.label import Label
 from kivy.uix.image import Image
+from kivy.uix.floatlayout import FloatLayout
 from kivy.properties import ObjectProperty
 from kivy.properties import StringProperty
 from kivy.properties import ListProperty
@@ -32,6 +33,8 @@ GUI = Builder.load_file("main.kv")
 HOME_PATH = str(Path.home())
 DRIVES = ['%s:' % d for d in string.ascii_uppercase if os.path.exists('%s:' % d)]
 
+CONTENT_LOADED = False
+
 
 def Dialog(title, content, width, height):
     '''
@@ -49,6 +52,51 @@ def MessageDialog(message):
     container.add_widget(label)
 
     dlg = Dialog("LOADING...", container, 400, 400)
+
+    return dlg
+
+def OKMessageDialog(message, width, height):
+    '''
+    Dialog With button for each drive
+    '''
+    container = BoxLayout(orientation='vertical', padding=[10,10,10,10], spacing=10, )
+    console = ConsoleTextInput( text = message, size = (50, 50))
+    button_container = BoxLayout(orientation='horizontal', padding=[10,10,10,10], spacing=10, size = (380, 200))
+    ok_button = AppButton(text="OK", name="OK_BUTTON", size_hint=(1, 0.8))
+
+    button_container.add_widget(ok_button)
+
+    container.add_widget(console)
+    container.add_widget(button_container)
+
+    dlg = Dialog("MESSAGE", container, width, height)
+    
+
+    ok_button.bind(on_press=lambda x: ok_button.OK_BUTTON_pressed(dlg))
+
+    return dlg
+
+def ChoiceDialog(message, width, height):
+    '''
+    Dialog With button for each drive
+    '''
+    container = BoxLayout(orientation='vertical', padding=[10,10,10,10], spacing=10, )
+    console = ConsoleTextInput( text = message, size = (50, 50))
+    button_container = BoxLayout(orientation='horizontal', padding=[10,10,10,10], spacing=10, size = (380, 200))
+    yes_button = AppButton(text="YES", name="YES_BUTTON", size_hint=(1, 0.5))
+    no_button = AppButton(text="NO", name="NO_BUTTON", size_hint=(1, 0.5))
+
+    button_container.add_widget(yes_button)
+    button_container.add_widget(no_button)
+
+    container.add_widget(console)
+    container.add_widget(button_container)
+
+    dlg = Dialog("?", container, width, height)
+    
+
+    yes_button.bind(on_press=lambda x: yes_button.YES_DEPLOY_BUTTON_pressed(dlg))
+    no_button.bind(on_press=lambda x: no_button.NO_DEPLOY_BUTTON_pressed(dlg))
 
     return dlg
 
@@ -209,6 +257,41 @@ class AppButton(Button):
     app = App.get_running_app()
     filechooser = None
 
+    def YES_DEPLOY_BUTTON_pressed(self, dlg):
+        '''
+        yes selection in deploy dialog
+        '''
+        app = App.get_running_app()
+        dlg.dismiss()
+
+        arweave_output = None
+        loading_dlg = OKMessageDialog("App is deploying, check the console when this dialog closes.", 400, 250).open()
+
+        if app.content_type.lower() == "docx":
+            arweave_output = arweave_com.deploy_app()
+
+        elif app.content_type.lower() == "psd":
+            arweave_output = arweave_com.deploy_app()
+
+        elif app.content_type.lower() == "video":
+            arweave_output = arweave_com.deploy_video_app()
+
+        app.root.ids.console_text_input.text = arweave_output
+        
+
+    def NO_DEPLOY_BUTTON_pressed(self, dlg):
+        '''
+        yes selection in deploy dialog
+        '''
+        print('NO DEPLOY')
+        dlg.dismiss()
+
+    def OK_BUTTON_pressed(self, dlg):
+        '''
+        yes selection in deploy dialog
+        '''
+        dlg.dismiss()
+
     def LOAD_CONTENT_POPUP_BUTTON_pressed(self, selection_list):
         '''
         Set the content path
@@ -247,11 +330,25 @@ class AppButton(Button):
 
     def on_btn_press(self, widget, *args):
         ui_animation.on_button_press(widget)
+        app = App.get_running_app()
 
         if self.name is "TEST_APP_BUTTON":
-            app = App.get_running_app()
-            app.popup = MessageDialog("Building Test Page")
-            app.popup.open()
+            print("On button press")
+            if os.path.isdir(app.root.ids.content_path_text_input.text) or os.path.isfile(app.root.ids.content_path_text_input.text):
+                dlg = OKMessageDialog("Creating test app.  Once completed, the app will open in a browser.", 400, 250).open()
+
+            else:
+                OKMessageDialog("CONTENT NOT LOADED!", 400, 250).open()
+            
+
+        if self.name is "DEPLOY_APP_BUTTON":
+            print("On button press")
+            if os.path.isdir(app.root.ids.content_path_text_input.text) or os.path.isfile(app.root.ids.content_path_text_input.text):
+                dlg = OKMessageDialog("Deploying the app.  Check the console, for details on your app.", 400, 250).open()
+
+            else:
+                OKMessageDialog("CONTENT NOT LOADED!", 400, 250).open()
+            
 
     def on_tab_press(self, widget, *args):
         ui_animation.on_button_press(widget)
@@ -261,25 +358,20 @@ class AppButton(Button):
 
         if self.name is "DEPLOY_APP_BUTTON":
 
-            app = App.get_running_app()
-            arweave_output = ''
+            if os.path.isdir(app.root.ids.content_path_text_input.text) or os.path.isfile(app.root.ids.content_path_text_input.text):
 
-            if app.content_type.lower() == "docx":
-                arweave_output = arweave_com.deploy_app()
+                ChoiceDialog("Are you sure you want to Deploy to the Permaweb? This cannot be un-done.", 400, 300).open()
+            else:
+                OKMessageDialog("CONTENT NOT LOADED!", 400, 250).open()
 
-            elif app.content_type.lower() == "psd":
-                arweave_output = arweave_com.deploy_app()
-
-            elif app.content_type.lower() == "video":
-                arweave_output = arweave_com.deploy_video_app()
-
-            app.root.ids.console_text_input.text = arweave_output
 
         elif self.name is "TEST_APP_BUTTON":
-            print("test app") 
-            
-            arweave_output = file_action.open_test_page(app.popup)
-            app.root.ids.console_text_input.text = arweave_output
+            print("test app")
+            app = App.get_running_app()
+
+            if os.path.isdir(app.root.ids.content_path_text_input.text) or os.path.isfile(app.root.ids.content_path_text_input.text):
+                arweave_output = file_action.open_test_page()
+                app.root.ids.console_text_input.text = arweave_output
 
         elif self.name is "CONTENT_PATH_LOAD_BUTTON":
             print("load content path")
@@ -331,7 +423,7 @@ class AppButton(Button):
 
         elif self.name is "TRANSACTION_STATUS_BUTTON":
             print("get transaction status")
-            info = arweave_com.wallet_balance()
+            info = arweave_com.transaction_status()
             app.root.ids.wallet_console_text_input.text = info
 
         pass

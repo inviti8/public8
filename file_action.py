@@ -37,23 +37,23 @@ def UpdateCss():
     CSS = index_render_data.DATA[TEMPLATE_DIR]
     return CSS["css"]
 
-def open_test_page(popup):
+def open_test_page():
     print("open test page")
     result = None
 
     if CONTENT_TYPE == "Docx":
-        result = create_text_content_and_open(popup)
+        result = create_text_content_and_open()
         
     elif CONTENT_TYPE == "Psd":
-        result = create_psd_content_and_open(popup)
+        result = create_psd_content_and_open()
 
     elif CONTENT_TYPE == "Video":
-        result = create_video_content_and_open(popup)
+        result = create_video_content_and_open()
 
     return result
 
 
-def create_text_content_and_open(popup):
+def create_text_content_and_open():
     print("creating text content to test")
     if TEMPLATE_DIR is not None or TEMPLATE_DIR is not "None":
         new_tab = 2
@@ -107,8 +107,6 @@ def create_text_content_and_open(popup):
 
         arweave_output = arweave_com.test_package(html_file, media_action.TestHTMLFilePath())
 
-        popup.dismiss()
-
         testIndexFile = media_action.GetTestIndexFile()
 
         if testIndexFile != None:
@@ -117,7 +115,7 @@ def create_text_content_and_open(popup):
         return arweave_output
 
 
-def create_psd_content_and_open(popup):
+def create_psd_content_and_open():
     print(" creating psd content and opening")
     if TEMPLATE_DIR is not None or TEMPLATE_DIR is not "None":
         new_tab = 2
@@ -169,8 +167,6 @@ def create_psd_content_and_open(popup):
 
         arweave_output = arweave_com.test_package(html_file, media_action.TestHTMLFilePath())
 
-        popup.dismiss()
-
         testIndexFile = media_action.GetTestIndexFile()
 
         if testIndexFile != None:
@@ -179,7 +175,7 @@ def create_psd_content_and_open(popup):
         return arweave_output
 
 
-def create_video_content_and_open(popup):
+def create_video_content_and_open():
     print(" creating video content and opening")
     if TEMPLATE_DIR is not None or TEMPLATE_DIR is not "None":
         new_tab = 2
@@ -228,8 +224,6 @@ def create_video_content_and_open(popup):
             result_file.close
 
         arweave_output = arweave_com.test_package(html_file, media_action.TestHTMLFilePath())
-
-        popup.dismiss()
 
         testIndexFile = media_action.GetTestIndexFile()
 

@@ -2,6 +2,41 @@
 #:import hex kivy.utils.get_color_from_hex
 
 #Shared attributes
+<FloatButton@FloatLayout> 
+    id: float_root  # Giving id to button 
+    size_hint: (None, None) 
+    text: '' 
+    btn_size: (70, 70) 
+    size: (70, 70) 
+    bg_color: (0.404, 0.227, 0.718, 1.0) 
+    pos_hint: {'x': .6} 
+  
+    # Adding shape and all, size, position to button 
+    Button: 
+        text: float_root.text 
+        markup: True
+        font_size: 40
+        size_hint: (None, None) 
+        size: float_root.btn_size 
+        pos_hint: {'x': 5.5, 'y': 3.8}  
+        background_normal: '' 
+        background_color: (0, 0, 0, 0) 
+        canvas.before: 
+            Color: 
+                rgba: (0.404, 0.227, 0.718, 1.0) 
+            Ellipse: 
+                size: self.size 
+                pos: self.pos
+                
+<LoadingImage@Image>:
+    canvas:
+        Color:
+            rgb: (1, 1, 1)
+        Rectangle:
+            source: 'arweave_lgo.png'
+            texture: self.texture
+            size: self.width + 20, self.height + 20
+            pos: self.x - 10, self.y - 10
 <Popup>:
     color:  0, .7, .8, 1
 
@@ -23,6 +58,51 @@
             pos: self.pos
             size: self.size
 
+<SelectAppButton@AppButton>:
+    markup: True
+    background_normal:''
+    background_color:0,0,0,0
+    color: 0,0,0,0
+    opacity: 1
+    on_press: self.on_btn_press(self)
+    canvas.before:
+        Color:
+            rgba: hex('#6d398a')
+        RoundedRectangle:
+            radius: 0, 5, 5, 0
+            pos: self.pos
+            size: self.size
+
+<GreenAppButton@AppButton>:
+    markup: True
+    background_normal:''
+    background_color:0,0,0,0
+    color: 0,0,0,0
+    opacity: 1
+    on_press: self.on_btn_press(self)
+    canvas.before:
+        Color:
+            rgba: hex('#348a26')
+        RoundedRectangle:
+            radius: 5, 5, 5, 5
+            pos: self.pos
+            size: self.size
+
+<RedAppButton@AppButton>:
+    markup: True
+    background_normal:''
+    background_color:0,0,0,0
+    color: 0,0,0,0
+    opacity: 1
+    on_press: self.on_btn_press(self)
+    canvas.before:
+        Color:
+            rgba: hex('#ff6247')
+        RoundedRectangle:
+            radius: 5, 5, 5, 5
+            pos: self.pos
+            size: self.size   
+
 <AppSpinner>:
     size: 30, 44
     size_hint: 1, 0.85
@@ -36,7 +116,7 @@
         Color:
             rgba: hex('#3a2c48')
         RoundedRectangle:
-            radius: 30, 5, 5, 5
+            radius: 30, 0, 0, 5
             pos: self.pos
             size: self.size
     canvas.after:
@@ -69,15 +149,14 @@
     do_default_tab: False
     color:  0, 0, 0, 1
     rows: 3
-
-    canvas: 
+    canvas:
         Color: 
             rgba: hex('#3a2c48')
         RoundedRectangle:
             radius: 5, 5, 5, 5 
             pos: self.pos 
-            size: self.size 
-    
+            size: self.size
+ 
     TabbedPanelItem:
         id: main_tab
         text: 'PUBLISH'
@@ -94,6 +173,7 @@
                 radius: 2, 30, 0, 0
                 pos: self.pos
                 size: self.size
+
         GridLayout:
             cols: 2
             canvas: 
@@ -115,7 +195,12 @@
                         rgba: 1,1,1,0.03
                     Triangle:
                         points:[0, self.height, self.width*1, self.height, 0, self.height-(.4*self.height)]
-
+                    Color:
+                        rgba: 1,1,1,0.3
+                    Rectangle:
+                        size:750, 493
+                        pos: self.pos
+                        source: 'publicate_logo.png'
 
                 BoxLayout:
                     orientation: 'horizontal'
@@ -188,7 +273,7 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     padding: 10
-                    size_hint: 1, 0.135
+                    size_hint: 1, 0.16
 
                     AppSpinner:
                         id: content_type_spinner
@@ -201,7 +286,7 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     padding: 10
-                    size_hint: 1, 0.14
+                    size_hint: 1, 0.16
 
                     AppTextInput:
                         id: content_path_text_input
@@ -211,7 +296,7 @@
                         size: 50, 44
                         font_size: 11
 
-                    AppButton:
+                    SelectAppButton:
                         id: content_path_load_button
                         name: "CONTENT_PATH_LOAD_BUTTON"
                         text: "LOAD"
@@ -220,7 +305,7 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     padding: 10
-                    size_hint: 1, 0.135
+                    size_hint: 1, 0.16
 
                     AppSpinner:
                         id: theme_spinner
@@ -229,7 +314,7 @@
                         text: "Dark Theme"
                         values: "Dark Theme", "Light Theme", "Gray Theme"
 
-                    AppButton:
+                    SelectAppButton:
                         id: theme_load_button
                         name: "THEME_LOAD_BUTTON"
                         text: "LOAD"
@@ -238,7 +323,7 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     padding: 10
-                    size_hint: 1, 0.135
+                    size_hint: 1, 0.16
                         
                     AppSpinner:
                         id: template_spinner
@@ -249,7 +334,7 @@
                 BoxLayout:
                     orientation: 'horizontal'
                     padding: 10
-                    size_hint: 1, 0.14
+                    size_hint: 1, 0.16
                         
                     AppSpinner:
                         id: page_direction_spinner
@@ -263,46 +348,31 @@
                     size_hint: 1, 0.25
                     spacing: 15
 
-                    AppButton:
+                    RedAppButton:
                         id: test_app_button
                         name: "TEST_APP_BUTTON"
                         text: "TEST"
                         font_size: 24
                         size_hint: 0.2, 0.7
-                        canvas.before:
-                            Color:
-                                rgba: hex('#ff6247')
-                            RoundedRectangle:
-                                radius: 5, 5, 5, 5
-                                pos: self.pos
-                                size: self.size
 
-                    AppButton:
+                    GreenAppButton:
                         id: deploy_app_button
                         name: "DEPLOY_APP_BUTTON"
                         text: "DEPLOY"
                         font_size: 24
                         size_hint: 0.2, 0.7
-                        canvas.before:
-                            Color:
-                                rgba: hex('#348a26')
-                            RoundedRectangle:
-                                radius: 5, 5, 5, 5
-                                pos: self.pos
-                                size: self.size
-                
-                        
+                    
                 BoxLayout:
                     orientation: 'vertical'
                     padding: 10
-                    size_hint: 1, 0.2
+                    size_hint: 1, 0.3
 
                     ConsoleTextInput:
                         id: console_text_input
                         name: "CONSOLE_TEXT_INPUT"
                         text: "Console"
                         size_hint: 1, 0.2
-                        size: 50, 20
+                        size: 50, 20  
             
 
     TabbedPanelItem:
@@ -348,43 +418,43 @@
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    size_hint: 1, 0.3
+                    size_hint: 1, 0.35
 
                     Label:
                         text: "Key Path"
-                        size_hint: 0.1, 0.3
+                        size_hint: 0.1, 0.35
 
                     AppTextInput:
                         id: wallet_key_text_input
                         name: "WALLET_KEY_TEXT_INPUT"
-                        size_hint: 0.9, 0.3
+                        size_hint: 0.9, 0.35
                         font_size: 10
 
-                    AppButton:
+                    SelectAppButton:
                         id: load_wallet_key_button
                         name: "LOAD_WALLET_KEY_BUTTON"
                         text: "LOAD KEY FILE"
-                        size_hint: 0.3, 0.3
+                        size_hint: 0.3, 0.35
 
                 BoxLayout:
                     orientation: 'horizontal'
-                    size_hint: 1, 0.3
+                    size_hint: 1, 0.35
 
                     Label:
                         text: "Hash"
-                        size_hint: 0.1, 0.3
+                        size_hint: 0.1, 0.35
 
                     AppTextInput:
                         id: transaction_hash_text_input
                         name: "TRANSACTION_HASH_TEXT_INPUT"
-                        size_hint: 0.9, 0.3
+                        size_hint: 0.9, 0.35
                         font_size: 10
 
-                    AppButton:
+                    SelectAppButton:
                         id: transaction_status_button
                         name: "TRANSACTION_STATUS_BUTTON"
                         text: "STATUS"
-                        size_hint: 0.3, 0.3
+                        size_hint: 0.3, 0.35
 
             BoxLayout:
                 orientation: 'horizontal'
@@ -431,3 +501,10 @@
                     font_size: 20
                     size_hint: 1, 1
                     size: 50, 50
+            FloatButton:
+                # Giving id to the button 
+                # So that we can Apply the Animation 
+                id: cta 
+                text: '+'
+                markup: True
+                background_color: 1, 0, 1, 0
