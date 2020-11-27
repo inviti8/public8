@@ -7,6 +7,7 @@ import html_parser
 PATH = os.path.dirname(os.path.realpath(inspect.stack()[0][1]))
 ARWEAVE = os.path.join(PATH, "arweave-x64")
 WALLET_PATH = None
+VIDEO_PATH = None
 HASH = None
 DEPLOYING = False
 
@@ -76,14 +77,14 @@ def deploy_app():
     result = None
     test_file = os.path.join(PATH, 'test')
     test_file = os.path.join(test_file, 'index.html')
-    arweave_cmd = ARWEAVE + ' deploy ' + test_file + ' --key-file ' + WALLET_PATH + ' --force-skip-warnings'
+    arweave_cmd = ARWEAVE + ' deploy ' + test_file + ' --key-file ' + WALLET_PATH + ' --force-skip-confirmation --force-skip-warnings' + '\n'
+    # arweave_cmd = [ARWEAVE, 'deploy', test_file, '--key-file', WALLET_PATH, '--force-skip-confirmation', '--force-skip-warnings']
+
     print(arweave_cmd)
-    # commands = [arweave_cmd, 'CONFIRM']
-    commands = arweave_cmd + "\n" + " CONFIRM"
+    # result = subprocess.run(arweave_cmd, stdout=subprocess.PIPE)
+    # result = result.stdout.decode('utf-8')
 
-    print(commands)
-
-    result = subprocess_cmd(commands)
+    result = subprocess_cmd(arweave_cmd)
     
     return result
 
@@ -100,10 +101,15 @@ def deploy_video_app():
     # return result
 
 def subprocess_cmd(commands):
+    result = None
     process = subprocess.Popen('cmd.exe', stdin=subprocess.PIPE, stdout=subprocess.PIPE)
     out, err = process.communicate(commands.encode('utf-8'))
 
-    if err != None:
-        print(err.decode('utf-8'))
+    result = out.decode('utf-8')
 
-    return out.decode('utf-8')
+    if err != None:
+        result = err.decode('utf-8')
+
+    print(result)
+
+    return result
