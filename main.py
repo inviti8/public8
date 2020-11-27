@@ -14,6 +14,7 @@ from kivy.properties import StringProperty
 from kivy.properties import ListProperty
 from kivy.lang import Builder
 from kivy.config import Config
+from kivy.garden import ProgressSpinner
 from pathlib import Path
 import arweave_com
 import app_builder
@@ -76,7 +77,7 @@ def OKMessageDialog(message, width, height):
 
     return dlg
 
-def ChoiceDialog(message, width, height):
+def ChoiceDialog(title, message, width, height):
     '''
     Dialog With button for each drive
     '''
@@ -92,7 +93,7 @@ def ChoiceDialog(message, width, height):
     container.add_widget(console)
     container.add_widget(button_container)
 
-    dlg = Dialog("?", container, width, height)
+    dlg = Dialog(title, container, width, height)
     
 
     yes_button.bind(on_press=lambda x: yes_button.YES_DEPLOY_BUTTON_pressed(dlg))
@@ -154,6 +155,24 @@ def FileChooser_LoadWalletKey(button):
 
     return container
 
+def FileChooser_LoadVideoPath(button):
+    '''
+    Dialog for choosing video File
+    '''
+    app = App.get_running_app()
+
+    container = BoxLayout(orientation='vertical')
+    app.filechooser = FileChooserIconView(path=app.root.current_drive)
+    
+    button = AppButton(text='SELECT', name="LOAD_VIDEO_PATH_BUTTON", size_hint=(1, .2))
+    button.selected = app.filechooser.selection
+    button.bind(on_press=lambda x: button.LOAD_VIDEO_PATH_BUTTON_pressed(app.filechooser.selection))
+
+    container.add_widget(app.filechooser)
+    container.add_widget(button)
+
+    return container
+
 def FileChooser_Flow(button, next_chooser, next_chooser_text):
     '''
     Handle redirect flow for sile selection
@@ -196,6 +215,18 @@ def ValidateWalletKeyPath(path):
         fileName = ntpath.basename(path).lower()
         extension = fileName.split(".")
         if "json" in extension:
+            result = path
+
+    return result
+
+def ValidateVideoPath(path):
+    result = None
+    file = os.path.isfile(path)
+        
+    if file:
+        fileName = ntpath.basename(path).lower()
+        extension = fileName.split(".")
+        if "mp4" in extension:
             result = path
 
     return result
@@ -264,19 +295,20 @@ class AppButton(Button):
         app = App.get_running_app()
         dlg.dismiss()
 
-        arweave_output = None
-        loading_dlg = OKMessageDialog("App is deploying, check the console when this dialog closes.", 400, 250).open()
+        if dlg.title == "Deploy App?":
+            arweave_output = None
+            loading_dlg = OKMessageDialog("App is deploying, check the console when this dialog closes.", 400, 250).open()
+            
+            if app.content_type.lower() == "docx":
+                arweave_output = arweave_com.deploy_app()
 
-        if app.content_type.lower() == "docx":
-            arweave_output = arweave_com.deploy_app()
+            elif app.content_type.lower() == "psd":
+                arweave_output = arweave_com.deploy_app()
 
-        elif app.content_type.lower() == "psd":
-            arweave_output = arweave_com.deploy_app()
+            elif app.content_type.lower() == "video":
+                arweave_output = arweave_com.deploy_video_app()
 
-        elif app.content_type.lower() == "video":
-            arweave_output = arweave_com.deploy_video_app()
-
-        app.root.ids.console_text_input.text = arweave_output
+            app.root.ids.console_text_input.text = arweave_output
         
 
     def NO_DEPLOY_BUTTON_pressed(self, dlg):
@@ -328,12 +360,27 @@ class AppButton(Button):
             else:
                 app.root.ids.wallet_key_text_input.text = "INVALID SELECTION!"
 
+    def LOAD_VIDEO_PATH_BUTTON_pressed(self, selection_list):
+        '''
+        Set the video file path, set edit text field
+        '''
+        if len(selection_list) > 0:
+            app = App.get_running_app()
+            path = selection_list[0]
+            validPath = ValidateVideoPath(path)
+
+            if validPath is not None:
+                print(validPath)
+                app.root.ids.video_path_text_input.text = validPath
+                arweave_com.VIDEO_PATH = validPath
+            else:
+                app.root.ids.video_path_text_input.text = "INVALID SELECTION!"
+
     def on_btn_press(self, widget, *args):
         ui_animation.on_button_press(widget)
         app = App.get_running_app()
 
         if self.name is "TEST_APP_BUTTON":
-            print("On button press")
             if os.path.isdir(app.root.ids.content_path_text_input.text) or os.path.isfile(app.root.ids.content_path_text_input.text):
                 dlg = OKMessageDialog("Creating test app.  Once completed, the app will open in a browser.", 400, 250).open()
 
@@ -342,9 +389,16 @@ class AppButton(Button):
             
 
         if self.name is "DEPLOY_APP_BUTTON":
-            print("On button press")
             if os.path.isdir(app.root.ids.content_path_text_input.text) or os.path.isfile(app.root.ids.content_path_text_input.text):
                 dlg = OKMessageDialog("Deploying the app.  Check the console, for details on your app.", 400, 250).open()
+
+            else:
+                OKMessageDialog("CONTENT NOT LOADED!", 400, 250).open()
+
+        if self.name is "DEPLOY_VIDEO_BUTTON":
+            if os.path.isdir(app.root.ids.content_path_text_input.text) or os.path.isfile(app.root.ids.content_path_text_input.text):
+                # dlg = OKMessageDialog("Deploying video file.  Check the console, for details on your app.", 400, 250).open()
+                dlg = ChoiceDialog("Deploy Video?","Are you sure you want to Deploy to the Permaweb? This cannot be un-done.", 400, 300).open()
 
             else:
                 OKMessageDialog("CONTENT NOT LOADED!", 400, 250).open()
@@ -360,7 +414,7 @@ class AppButton(Button):
 
             if os.path.isdir(app.root.ids.content_path_text_input.text) or os.path.isfile(app.root.ids.content_path_text_input.text):
 
-                ChoiceDialog("Are you sure you want to Deploy to the Permaweb? This cannot be un-done.", 400, 300).open()
+                ChoiceDialog("Deploy App?","Are you sure you want to Deploy to the Permaweb? This cannot be un-done.", 400, 300).open()
             else:
                 OKMessageDialog("CONTENT NOT LOADED!", 400, 250).open()
 
@@ -406,9 +460,21 @@ class AppButton(Button):
             FileChooser_Flow(self, FileChooser_LoadWalletKey, "LOAD WALLET KEY FILE")
             app.popup.open()
 
+        elif self.name is "VIDEO_PATH_BUTTON":
+            '''
+            If there are multiple drives prompt choose drive,
+            else open dialog in home directory
+            '''
+            FileChooser_Flow(self, FileChooser_LoadVideoPath, "LOAD WALLET KEY FILE")
+            app.popup.open()
+
         elif self.name is "LOAD_WALLET_KEY_FILE_BUTTON":
             print("wallet key file selected")
-            app.popup.dismiss()     
+            app.popup.dismiss()   
+
+        elif self.name is "LOAD_VIDEO_PATH_BUTTON":
+            print("video file selected")
+            app.popup.dismiss()   
 
         elif self.name is "CREATE_WALLET_KEY_BUTTON":
             print("create wallet key")

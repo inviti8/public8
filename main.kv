@@ -413,7 +413,7 @@
 
             BoxLayout:
                 orientation: 'vertical'
-                size_hint: 1, 0.4
+                size_hint: 1, 0.5
                 padding: 5 
 
                 BoxLayout:
@@ -461,7 +461,7 @@
                     size_hint: 1, 0.4
 
                     Label:
-                        text: "Hash"
+                        text: "App Hash"
                         size_hint: 0.1, 0.4
 
                     AppTextInput:
@@ -485,28 +485,42 @@
                 Label:
                     text: "   "
                     size_hint: 0.1, 0.5
+
+            BoxLayout:
+                orientation: 'horizontal'
+                size_hint: 0.98, 0.15
+
+                Label:
+                    text: "Video Hash"
+                    size_hint: 0.1, 0.4
+
+                AppTextInput:
+                    id: video_hash_text_input
+                    name: "VIDEO_HASH_TEXT_INPUT"
+                    size_hint: 0.98, 0.4
+                    font_size: 10
             
             BoxLayout:
                 orientation: 'vertical'
                 padding: 10
-                size_hint: 1, 0.1
+                size_hint: 1, 0.15
                 AppButton:
                     id: deploy_video_button
                     name: "DEPLOY_VIDEO_BUTTON"
                     text: "DEPLOY VIDEO"
-                    font_size: 24
-                    size_hint: 1, 0.1
+                    font_size: 18
+                    size_hint: 1, 0.25
 
             BoxLayout:
                 orientation: 'vertical'
                 padding: 10
-                size_hint: 1, 0.1
+                size_hint: 1, 0.15
                 AppButton:
                     id: wallet_balance_button
                     name: "WALLET_BALANCE_BUTTON"
                     text: "WALLET BALANCE"
-                    font_size: 24
-                    size_hint: 1, 0.1
+                    font_size: 18
+                    size_hint: 1, 0.25
 
             BoxLayout:
                 orientation: 'vertical'
@@ -520,6 +534,7 @@
                     font_size: 20
                     size_hint: 1, 1
                     size: 50, 50
+                    
             FloatButton:
                 # Giving id to the button 
                 # So that we can Apply the Animation 
