@@ -86,6 +86,7 @@ def ChoiceDialog(title, message, width, height):
     button_container = BoxLayout(orientation='horizontal', padding=[10,10,10,10], spacing=10, size = (380, 200))
     yes_button = AppButton(text="YES", name="YES_BUTTON", size_hint=(1, 0.5))
     no_button = AppButton(text="NO", name="NO_BUTTON", size_hint=(1, 0.5))
+ 
 
     button_container.add_widget(yes_button)
     button_container.add_widget(no_button)
@@ -309,6 +310,11 @@ class AppButton(Button):
                 arweave_output = arweave_com.deploy_video_app()
 
             app.root.ids.console_text_input.text = arweave_output
+        elif dlg.title == "Deploy Video?":
+            print("should deploy video")
+            arweave_com.get_price(arweave_com.VIDEO_FILE_SIZE)
+            # info = arweave_com.deploy_video()
+            # app.root.ids.wallet_console_text_input.text = info
         
 
     def NO_DEPLOY_BUTTON_pressed(self, dlg):
@@ -373,6 +379,7 @@ class AppButton(Button):
                 print(validPath)
                 app.root.ids.video_path_text_input.text = validPath
                 arweave_com.VIDEO_PATH = validPath
+                arweave_com.VIDEO_FILE_SIZE = arweave_com.convert_bytes(arweave_com.get_file_size_3(validPath), "MB") 
             else:
                 app.root.ids.video_path_text_input.text = "INVALID SELECTION!"
 
@@ -396,7 +403,8 @@ class AppButton(Button):
                 OKMessageDialog("CONTENT NOT LOADED!", 400, 250).open()
 
         if self.name is "DEPLOY_VIDEO_BUTTON":
-            if os.path.isdir(app.root.ids.content_path_text_input.text) or os.path.isfile(app.root.ids.content_path_text_input.text):
+            if os.path.isfile(app.root.ids.video_path_text_input.text) and arweave_com.WALLET_PATH != None and arweave_com.VIDEO_PATH != None:
+                print("deploy video button pressed")
                 # dlg = OKMessageDialog("Deploying video file.  Check the console, for details on your app.", 400, 250).open()
                 dlg = ChoiceDialog("Deploy Video?","Are you sure you want to Deploy to the Permaweb? This cannot be un-done.", 400, 300).open()
 
@@ -483,7 +491,7 @@ class AppButton(Button):
             print("forget wallet key")
 
         elif self.name is "WALLET_BALANCE_BUTTON":
-            print("get wallet balance")
+            print("deploy video to arweave")
             info = arweave_com.wallet_balance()
             app.root.ids.wallet_console_text_input.text = info
 
