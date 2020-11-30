@@ -10,8 +10,10 @@ from pathlib import Path
 PATH = os.path.dirname(os.path.realpath(inspect.stack()[0][1]))
 ARWEAVE = os.path.join(PATH, "arweave-x64")
 WALLET_PATH = None
+WALLET_BALANCE = None
 VIDEO_PATH = None
 VIDEO_FILE_SIZE = None
+PRICE = None
 HASH = None
 DEPLOYING = False
 APP_FILE_SIZE = None
@@ -41,8 +43,7 @@ def get_price(mb):
     resp = requests.get(url, params=dat, headers={'User-Agent': 'Mozilla/5.0'})
     winstons = int(resp.content.decode('utf-8'))
     ar = winstons * 0.000000000001
-    print(ar)
-    print(VIDEO_FILE_SIZE)
+    return ar
 
 def network_info():
     tmp_file = os.path.join(PATH, "tmp")
@@ -59,6 +60,11 @@ def save_key_file():
 def forget_key_file():
     print("forget key file")
 
+def get_wallet_balance():
+    result = subprocess.run([ARWEAVE, 'balance', '--key-file', WALLET_PATH], stdout=subprocess.PIPE)
+    result = result.stdout.decode('utf-8')
+    return float(result.partition("Balance: ")[2].replace(" AR", ""))
+
 def wallet_balance():
     print("wallet balance:")
     result = None
@@ -66,6 +72,8 @@ def wallet_balance():
         print(WALLET_PATH)
         result = subprocess.run([ARWEAVE, 'balance', '--key-file', WALLET_PATH], stdout=subprocess.PIPE)
         result = result.stdout.decode('utf-8')
+        WALLET_BALANCE = float(result.partition("Balance: ")[2].replace(" AR", ""))
+        print("WALLET_BALANCE --> " + str(WALLET_BALANCE))
         print("Wallet balance is: " + result)
 
     return result

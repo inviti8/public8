@@ -363,6 +363,7 @@ class AppButton(Button):
             if validPath is not None:
                 app.root.ids.wallet_key_text_input.text = validPath
                 arweave_com.WALLET_PATH = validPath
+                print("arweave_com.WALLET_BALANCE: " + str(arweave_com.WALLET_BALANCE))
             else:
                 app.root.ids.wallet_key_text_input.text = "INVALID SELECTION!"
 
@@ -379,7 +380,8 @@ class AppButton(Button):
                 print(validPath)
                 app.root.ids.video_path_text_input.text = validPath
                 arweave_com.VIDEO_PATH = validPath
-                arweave_com.VIDEO_FILE_SIZE = arweave_com.convert_bytes(arweave_com.get_file_size_3(validPath), "MB") 
+                arweave_com.VIDEO_FILE_SIZE = arweave_com.convert_bytes(arweave_com.get_file_size_3(validPath), "MB")
+                arweave_com.PRICE = arweave_com.get_price(arweave_com.VIDEO_FILE_SIZE)
             else:
                 app.root.ids.video_path_text_input.text = "INVALID SELECTION!"
 
@@ -405,8 +407,14 @@ class AppButton(Button):
         if self.name is "DEPLOY_VIDEO_BUTTON":
             if os.path.isfile(app.root.ids.video_path_text_input.text) and arweave_com.WALLET_PATH != None and arweave_com.VIDEO_PATH != None:
                 print("deploy video button pressed")
-                # dlg = OKMessageDialog("Deploying video file.  Check the console, for details on your app.", 400, 250).open()
-                dlg = ChoiceDialog("Deploy Video?","Are you sure you want to Deploy to the Permaweb? This cannot be un-done.", 400, 300).open()
+                wallet_balance = arweave_com.get_wallet_balance()
+                deploy_message = "Are you sure you want to Deploy to the Permaweb? Cost will be: " + str(arweave_com.PRICE) + " This cannot be un-done."
+                insufficient_balance_message = "Insufficient AR available. \nWallet Balance: " + str(wallet_balance) + "\n Price: " + str(arweave_com.PRICE)
+
+                if wallet_balance > arweave_com.PRICE:
+                    dlg = ChoiceDialog("Deploy Video?", deploy_message, 400, 300).open()
+                else:
+                    dlg = OKMessageDialog(insufficient_balance_message, 400, 250).open()
 
             else:
                 OKMessageDialog("CONTENT NOT LOADED!", 400, 250).open()
